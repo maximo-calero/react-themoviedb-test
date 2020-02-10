@@ -58,9 +58,9 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 {this.state.searchResults.totalResults > 0 &&
                     this.state.searchResults.movies.map(item => {
                         return (
-                            <>
-                                <p>{item.title}</p>
-                            </>
+                            <div key={item.id}>
+                                <p >{item.title}</p>
+                            </div>
                         );
                     })
                 }
