@@ -1,14 +1,14 @@
 export interface Configuration {
     images: Images;
-    changeKeys: string[];
+    changeKeys: any;
 }
 
 interface Images {
     baseUrl: string;
     secureBaseUrl: string;
-    backdropSizes: string[];
-    logoSizes: string[];
-    posterSizes: string[];
-    profileSizes: string[];
-    stillSizes: string[];
+    backdropSizes: any;
+    logoSizes: any;
+    posterSizes: any;
+    profileSizes: any;
+    stillSizes: any;
 }
