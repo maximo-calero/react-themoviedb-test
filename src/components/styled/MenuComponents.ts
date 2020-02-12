@@ -26,11 +26,3 @@ export const MenuItem = styled.li `
         color: rgb(102, 102, 102);        
     }
 `
-
-// export const NavigationItemLink = styled.a`
-//     display: block;
-//     text-align: center;
-//     padding: 5px 16px;
-//     text-decoration: none;
-//     color: rgb(102, 102, 102);
-// `

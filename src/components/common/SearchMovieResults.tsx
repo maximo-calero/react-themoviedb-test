@@ -1,7 +1,6 @@
 import React from 'react';
 import { SearchResultsProps } from './ControlInterfaces';
 import Grid from '@material-ui/core/Grid';
-import Paper from '@material-ui/core/Paper';
 import { StyledPaper, SearchMovieResultsContainer } from './styled/CommonComponents';
 import MediaCard from './MediaCard';
 
@@ -13,7 +12,12 @@ class SearchMovieResults extends React.Component<SearchResultsProps> {
     render() {
         return(
             <SearchMovieResultsContainer>
-                <Grid container spacing={1}>
+                <Grid container 
+                      direction='row' 
+                      justify='center' 
+                      alignItems='flex-start' 
+                      spacing={1}
+                >
                     {this.props.movies.length === 0 &&
                         <StyledPaper>No results</StyledPaper>
                     }

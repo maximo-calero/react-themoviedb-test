@@ -11,3 +11,9 @@ export interface SearchResultsProps {
     imageBaseUrl: string;
     movies: Movie[];
 }
+
+export interface SearchDefinitionProps {
+    value: string;
+    placeHolderText: string;
+    onChangeSearchType: (event: React.ChangeEvent<{ value: unknown }>) => void;
+}
