@@ -1,2 +1,3 @@
-export *  from "../model/Configuration";
-export * from "../model/SearchResults";
+export *  from './Configuration';
+export * from './SearchResults';
+export * from './Movie';

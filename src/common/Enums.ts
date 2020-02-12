@@ -1,17 +1,18 @@
-export enum RequestState {
-    DeparmentSelection,
-    RequesProcess,
-    SendRequest
+export enum BackdropSizes {
+    w300 =0,
+    w780 =1,
+    w1280 =2,
+    original =3    
 }
 
-export enum StepComponentType {
-    SelectionPanel = 0,
-    MultiSelectionPanel = 1,
-    DateInput = 2,
-    TextInput = 3,
-    NumberInput = 4,
-    MultilineTextInput = 5,
-    SendRequest = 6
+export enum PosterSizes {
+    "w92",
+    "w154",
+    "w185",
+    "w342",
+    "w500",
+    "w780",
+    "original"
 }
 
 export enum StepContainerType {

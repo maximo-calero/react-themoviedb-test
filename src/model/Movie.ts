@@ -2,6 +2,7 @@
 export interface Movie {
     id: number;
     title: string;
+    shortDescription: string;
     overview: string;
     popularity: number;
     video: boolean;

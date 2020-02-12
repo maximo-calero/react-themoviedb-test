@@ -26,19 +26,26 @@ export class DataService implements IDataService {
         return await response.json();
     }
 
+    private strEnum<T extends string>(o: Array<T>): {[K in T]: K} {
+        return o.reduce((res, key) => {
+          res[key] = key;
+          return res;
+        }, Object.create(null));
+    }
+
     public async getConfiguration(): Promise<Configuration> {
         const obj: any = await this.getApiJson(stringConstants.apiEntities.configuration)
         const configuration: Configuration = {
             images: {
                 baseUrl: obj.images.base_url,
                 secureBaseUrl: obj.images.secure_base_url,
-                backdropSizes: obj.images.backdrop_sizes,
-                logoSizes: obj.images.logo_sizes,
-                posterSizes: obj.images.poster_sizes,
-                profileSizes: obj.images.profile_sizes,
-                stillSizes: obj.images.still_sizes
+                backdropSizes: this.strEnum(obj.images.backdrop_sizes),
+                logoSizes: this.strEnum(obj.images.logo_sizes),
+                posterSizes: this.strEnum(obj.images.poster_sizes),
+                profileSizes: this.strEnum(obj.images.profile_sizes),
+                stillSizes: this.strEnum(obj.images.still_sizes)
             },
-            changeKeys: obj.change_keys
+            changeKeys: this.strEnum(obj.change_keys)
         };
         return configuration;
     }
@@ -57,6 +64,11 @@ export class DataService implements IDataService {
                         id: item.id,
                         title: item.title,
                         overview: item.overview,
+                        shortDescription: item.overview 
+                                            ? (item.overview as string).length > 128
+                                                ? `${(item.overview as string).substr(0, 125)}...`
+                                                : (item.overview as string)
+                                            : '',
                         popularity: item.popularity,
                         video: item.video,
                         voteCount: item.vote_count,

@@ -4,6 +4,8 @@ import { HomeState } from './HomeState';
 import { IDataService } from '../../service/DataServiceInterfaces';
 import { DataService } from '../../service/DataService';
 import { Configuration, SearchResults } from '../../model';
+import MediaCard from '../common/MediaCard';
+import SearchMovieResults from '../common/SearchResults';
 
 class Home extends React.Component<HomeProps, HomeState>  {
     dataService: IDataService;
@@ -51,22 +53,13 @@ class Home extends React.Component<HomeProps, HomeState>  {
         const secureUrl: string = this.state.configuration.images.secureBaseUrl !== ''
                                 ? this.state.configuration.images.secureBaseUrl
                                 : '';
-        const completeImageUrl: string = secureUrl !== '' ? `${secureUrl}/${this.state.configuration.images.posterSizes[4]}/${image}` : '';
-
+        const completeImageUrl: string = secureUrl !== '' ? `${secureUrl}/${this.state.configuration.images.posterSizes.w154}/${image}` : '';
+        const imageUrl: string = secureUrl !== '' ? `${secureUrl}/${this.state.configuration.images.posterSizes.w154}/` : '';
         return (
             <div>
+
                 {this.state.searchResults.totalResults > 0 &&
-                    this.state.searchResults.movies.map(item => {
-                        return (
-                            <div key={item.id}>
-                                <p >{item.title}</p>
-                            </div>
-                        );
-                    })
-                }
-                <p>Images URL</p>
-                {this.state.configuration.images.baseUrl !== '' &&
-                    <img src={completeImageUrl} />
+                    <SearchMovieResults imageBaseUrl={imageUrl} movies={this.state.searchResults.movies} />
                 }
             </div>
         )
