@@ -7,6 +7,7 @@ export interface HomeState {
 }
 
 interface SearchDefinitionValues {
-    value: string;
+    searchTerm: string;
+    searchTypeValue: string;
     placeholderText: string;
 }

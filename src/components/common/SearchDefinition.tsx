@@ -14,7 +14,7 @@ const SearchDefinition =(props: SearchDefinitionProps) => {
         <SearchDefinitionPaper component="form" >
             <NativeSelect
                 id="demo-customized-select-native"
-                value={props.value}
+                value={props.searchTypeValue}
                 onChange={props.onChangeSearchType}
             >
                 <option value={1}>Movies</option>
@@ -25,9 +25,13 @@ const SearchDefinition =(props: SearchDefinitionProps) => {
             <SearchInput
                 placeholder={props.placeHolderText}
                 inputProps={{ 'aria-label': 'search movies' }}
-
+                onChange={props.onChangeSearchInput}
             />
-            <SearchDefinitionIconButton type="submit"  aria-label="search">
+            <SearchDefinitionIconButton 
+                type="submit"  
+                aria-label="search"
+                onClick={props.onClickSearch}
+            >
                 <SearchIcon />
             </SearchDefinitionIconButton>
 

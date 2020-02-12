@@ -37,7 +37,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
             configuration: this.emptyConfiguration,
             searchResults: this.emptySearchResults,
             searchDefinition: {
-                value: '1',
+                searchTerm: '',
+                searchTypeValue: '1',
                 placeholderText: 'Search Movies in The Movie Database API'
             }
         }
@@ -45,9 +46,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
 
     async componentDidMount() {
         const conf: Configuration = await this.dataService.getConfiguration();
-        const testSearch: SearchResults = await this.dataService.searchMovies('Avengers');
-        this.setState({ configuration: conf, searchResults: testSearch });
-
+        // const testSearch: SearchResults = await this.dataService.searchMovies('Avengers');
+        this.setState({ configuration: conf });
     }
 
     handleChangeSearchType = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -55,10 +55,28 @@ class Home extends React.Component<HomeProps, HomeState>  {
         const newPlaceHolder = `Search ${selectedOptions[0].text} in The Movie Database API` ;
         this.setState(prevState => ({ 
                     ...prevState, 
-                        searchDefinition: {
-                            value: value, placeholderText:newPlaceHolder
+                        searchDefinition: { 
+                            ...prevState.searchDefinition,
+                            searchTypeValue: value, placeholderText:newPlaceHolder
                         } 
                     }));
+    }
+
+    handleOnChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { value } = event.currentTarget as HTMLInputElement;
+        this.setState(prevState => ({ 
+                    ...prevState, 
+                        searchDefinition: { 
+                            ...prevState.searchDefinition,
+                            searchTerm: value
+                        } 
+                    }));        
+    }
+
+    handleOnClickSearch = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        const searchResults: SearchResults = 
+            await this.dataService.searchMovies(this.state.searchDefinition.searchTerm);
+        this.setState(prevState => ({ ...prevState, searchResults: searchResults }));
     }
 
     render() {
@@ -68,9 +86,12 @@ class Home extends React.Component<HomeProps, HomeState>  {
         const imageUrl: string = secureUrl !== '' ? `${secureUrl}/${this.state.configuration.images.posterSizes.w92}/` : '';
         return (
             <HomeContainer>
-                <SearchDefinition value={this.state.searchDefinition.value} 
+                <SearchDefinition searchTerm={this.state.searchDefinition.searchTerm} 
+                                  searchTypeValue={this.state.searchDefinition.searchTypeValue} 
                                   placeHolderText={this.state.searchDefinition.placeholderText}
+                                  onChangeSearchInput={this.handleOnChangeSearchInput}
                                   onChangeSearchType={this.handleChangeSearchType}
+                                  onClickSearch={this.handleOnClickSearch}
                 />
                 {this.state.searchResults.totalResults > 0 &&
                     <SearchMovieResults imageBaseUrl={imageUrl} movies={this.state.searchResults.movies} />

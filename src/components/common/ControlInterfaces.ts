@@ -13,7 +13,10 @@ export interface SearchResultsProps {
 }
 
 export interface SearchDefinitionProps {
-    value: string;
+    searchTerm: string;
+    searchTypeValue: string;
     placeHolderText: string;
     onChangeSearchType: (event: React.ChangeEvent<{ value: unknown }>) => void;
+    onChangeSearchInput: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
+    onClickSearch: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
