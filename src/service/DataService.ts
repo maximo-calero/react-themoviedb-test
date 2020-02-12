@@ -45,8 +45,8 @@ export class DataService implements IDataService {
         return configuration;
     }
 
-    public async searchMovies(searchTerm: string): Promise<SearchResults> {
-        const query: string= `${stringConstants.params.query}${searchTerm}`;
+    public async searchMovies(searchTerm: string, page: number): Promise<SearchResults> {
+        const query: string= `${stringConstants.params.query}${searchTerm}${stringConstants.params.page}${page.toString()}`;
         const obj: any = await this.getApiJson(stringConstants.apiEntities.searchMovie, query);
 
         if (obj.total_results > 0) {

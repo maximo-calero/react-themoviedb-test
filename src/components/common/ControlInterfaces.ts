@@ -9,7 +9,9 @@ export interface MediaCardProps {
 
 export interface SearchContentResultsProps {
     imageBaseUrl: string;
+    hasMoreItems: boolean;
     results: Result[];
+    loadResults:() => void;
 }
 
 export interface SearchDefinitionProps {
