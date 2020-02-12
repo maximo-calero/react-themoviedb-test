@@ -1,11 +1,11 @@
 import React from 'react';
-import { SearchResultsProps } from './ControlInterfaces';
+import { SearchContentResultsProps } from './ControlInterfaces';
 import Grid from '@material-ui/core/Grid';
-import { StyledPaper, SearchMovieResultsContainer } from './styled/CommonComponents';
+import { SearchMovieResultsContainer } from './styled/CommonComponents';
 import MediaCard from './MediaCard';
 
-class SearchMovieResults extends React.Component<SearchResultsProps> {
-    constructor(props: SearchResultsProps) {
+class SearchContentResults extends React.Component<SearchContentResultsProps> {
+    constructor(props: SearchContentResultsProps) {
         super(props);
     }
 
@@ -18,11 +18,8 @@ class SearchMovieResults extends React.Component<SearchResultsProps> {
                       alignItems='flex-start' 
                       spacing={1}
                 >
-                    {this.props.movies.length === 0 &&
-                        <StyledPaper>No results</StyledPaper>
-                    }
-                    {this.props.movies.length > 0 &&
-                        this.props.movies.map(item => {
+                    {this.props.results.length > 0 &&
+                        this.props.results.map(item => {
                             return (
                                 <Grid key={item.id} item>
                                     <MediaCard 
@@ -42,4 +39,4 @@ class SearchMovieResults extends React.Component<SearchResultsProps> {
     }
 }
 
-export default SearchMovieResults;
+export default SearchContentResults;

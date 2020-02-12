@@ -3,10 +3,10 @@ import { HomeProps } from './HomeProps';
 import { HomeState } from './HomeState';
 import { IDataService } from '../../service/DataServiceInterfaces';
 import { DataService } from '../../service/DataService';
-import { Configuration, SearchResults } from '../../model';
-import SearchMovieResults from '../common/SearchMovieResults';
+import { Configuration, SearchResults, TvShow, Movie } from '../../model';
+import SearchContentResults from '../common/SearchContentResults';
 import SearchDefinition from '../common/SearchDefinition';
-import { HomeContainer } from '../common/styled/CommonComponents';
+import { HomeContainer, StyledPaper } from '../common/styled/CommonComponents';
 
 class Home extends React.Component<HomeProps, HomeState>  {
     dataService: IDataService;
@@ -27,7 +27,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
         page: 0,
         totalPages: 0,
         totalResults: 0,
-        movies: []
+        results: []
     };
     constructor(props: HomeProps) {
         super(props);
@@ -38,7 +38,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
             searchResults: this.emptySearchResults,
             searchDefinition: {
                 searchTerm: '',
-                searchTypeValue: '1',
+                searchTypeValue: 'Movies',
                 placeholderText: 'Search Movies in The Movie Database API'
             }
         }
@@ -46,19 +46,25 @@ class Home extends React.Component<HomeProps, HomeState>  {
 
     async componentDidMount() {
         const conf: Configuration = await this.dataService.getConfiguration();
-        // const testSearch: SearchResults = await this.dataService.searchMovies('Avengers');
         this.setState({ configuration: conf });
     }
 
-    handleChangeSearchType = (event: React.ChangeEvent<{ value: unknown }>) => {
-        const { value, selectedOptions } = event.currentTarget as HTMLSelectElement;
-        const newPlaceHolder = `Search ${selectedOptions[0].text} in The Movie Database API` ;
+    handleChangeSearchType = (event: any) => {
+        const { value } = event.target;
+        const newPlaceHolder = `Search ${value} in The Movie Database API` ;
         this.setState(prevState => ({ 
                     ...prevState, 
                         searchDefinition: { 
-                            ...prevState.searchDefinition,
-                            searchTypeValue: value, placeholderText:newPlaceHolder
-                        } 
+                            searchTerm: '',
+                            searchTypeValue: value, 
+                            placeholderText:newPlaceHolder
+                        },
+                        searchResults: {
+                            page: 0,
+                            totalPages: 0,
+                            totalResults: 0,
+                            results: []
+                        }
                     }));
     }
 
@@ -74,6 +80,21 @@ class Home extends React.Component<HomeProps, HomeState>  {
     }
 
     handleOnClickSearch = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        event.preventDefault();
+        switch(this.state.searchDefinition.searchTypeValue) {
+            case 'Movies':
+                const searchMovieResults: SearchResults = 
+                    await this.dataService.searchMovies(this.state.searchDefinition.searchTerm);
+                this.setState(prevState => ({ ...prevState, searchResults: searchMovieResults }));
+                break;
+            case 'TV Shows':
+                const searchTvShowResults: SearchResults = 
+                    await this.dataService.searchTvShows(this.state.searchDefinition.searchTerm);
+                this.setState(prevState => ({ ...prevState, searchResults: searchTvShowResults }));
+                break;
+            default:
+                break;
+        }
         const searchResults: SearchResults = 
             await this.dataService.searchMovies(this.state.searchDefinition.searchTerm);
         this.setState(prevState => ({ ...prevState, searchResults: searchResults }));
@@ -93,8 +114,16 @@ class Home extends React.Component<HomeProps, HomeState>  {
                                   onChangeSearchType={this.handleChangeSearchType}
                                   onClickSearch={this.handleOnClickSearch}
                 />
+                {this.state.searchResults.totalResults === 0 &&
+                    <StyledPaper>No results</StyledPaper>
+                }                
                 {this.state.searchResults.totalResults > 0 &&
-                    <SearchMovieResults imageBaseUrl={imageUrl} movies={this.state.searchResults.movies} />
+                    <SearchContentResults 
+                        imageBaseUrl={imageUrl} 
+                        results={this.state.searchDefinition.searchTypeValue === '1'
+                                    ? (this.state.searchResults.results as Movie[])
+                                    : (this.state.searchResults.results as TvShow[])} 
+                        />
                 }
             </HomeContainer>
         )

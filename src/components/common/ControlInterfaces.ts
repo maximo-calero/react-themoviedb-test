@@ -1,4 +1,4 @@
-import { Movie } from "../../model";
+import { Result } from "../../model/Result";
 
 export interface MediaCardProps {
     title: string;
@@ -7,16 +7,17 @@ export interface MediaCardProps {
     contentDescription: string;
 }
 
-export interface SearchResultsProps {
+export interface SearchContentResultsProps {
     imageBaseUrl: string;
-    movies: Movie[];
+    results: Result[];
 }
 
 export interface SearchDefinitionProps {
     searchTerm: string;
     searchTypeValue: string;
     placeHolderText: string;
-    onChangeSearchType: (event: React.ChangeEvent<{ value: unknown }>) => void;
+    //onChangeSearchType: (event: React.ChangeEvent<{ value: unknown }>) => void;
+    onChangeSearchType: (event: any) => void;
     onChangeSearchInput: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onClickSearch: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }

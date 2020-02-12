@@ -1,7 +1,7 @@
 import { IDataService } from "./DataServiceInterfaces";
-import { Configuration, SearchResults } from "../model";
+import { Configuration, SearchResults, Movie, TvShow } from "../model";
 import { stringConstants } from "../common/StringConstants";
-import { stringToEnum } from "../common/FunctionsHelper";
+import { stringToEnum, stringToDate } from "../common/FunctionsHelper";
 
 
 export class DataService implements IDataService {
@@ -50,42 +50,87 @@ export class DataService implements IDataService {
         const obj: any = await this.getApiJson(stringConstants.apiEntities.searchMovie, query);
 
         if (obj.total_results > 0) {
+            const movies: Movie[] = (obj.results as any[]).map(item => {
+                return {
+                    id: item.id,
+                    title: item.title,
+                    overview: item.overview,
+                    shortDescription: item.overview 
+                                        ? (item.overview as string).length > 60
+                                            ? `${(item.overview as string).substr(0, 60)}...`
+                                            : (item.overview as string)
+                                        : '',
+                    popularity: item.popularity,
+                    video: item.video,
+                    voteCount: item.vote_count,
+                    voteAverage: item.vote_average,
+                    releaseDate: stringToDate(item.release_date),
+                    originalLanguage: item.original_language,
+                    originalTitle: item.original_title,
+                    genreIds: item.genre_ids,
+                    backdropPath: item.backdrop_path,
+                    adult: item.adult,
+                    posterPath: item.poster_path
+                };
+            });
+
             return {
                 page: obj.page,
                 totalResults: obj.total_results,
                 totalPages: obj.total_pages,
-                movies: (obj.results as any[]).map(item => {
-                    return {
-                        id: item.id,
-                        title: item.title,
-                        overview: item.overview,
-                        shortDescription: item.overview 
-                                            ? (item.overview as string).length > 60
-                                                ? `${(item.overview as string).substr(0, 60)}...`
-                                                : (item.overview as string)
-                                            : '',
-                        popularity: item.popularity,
-                        video: item.video,
-                        voteCount: item.vote_count,
-                        voteAverage: item.vote_average,
-                        releaseDate: item.release_date,
-                        originalLanguage: item.original_language,
-                        originalTitle: item.original_title,
-                        genreIds: item.genre_ids,
-                        backdropPath: item.backdrop_path,
-                        adult: item.adult,
-                        posterPath: item.poster_path
-                    }
-                })
-            };    
+                results: movies
+            };
         }else {
             return {
                 page: obj.page,
                 totalResults: obj.total_results,
                 totalPages: obj.total_pages,
-                movies: []
+                results: []
             };
         }
     }
 
+    public async searchTvShows(searchTerm: string): Promise<SearchResults> {
+        const query: string= `${stringConstants.params.query}${searchTerm}`;
+        const obj: any = await this.getApiJson(stringConstants.apiEntities.searchTvShow, query);
+
+        if (obj.total_results > 0) {
+            const tvShows: TvShow[] = (obj.results as any[]).map(item => {
+                return {
+                    id: item.id,
+                    title: item.name,
+                    overview: item.overview,
+                    shortDescription: item.overview 
+                                        ? (item.overview as string).length > 60
+                                            ? `${(item.overview as string).substr(0, 60)}...`
+                                            : (item.overview as string)
+                                        : '',
+                    popularity: item.popularity,
+                    voteCount: item.vote_count,
+                    voteAverage: item.vote_average,
+                    releaseDate: item.first_air_date && stringToDate(item.first_air_date),
+                    originalName: item.original_name,
+                    originCountry: item.origin_country,
+                    originalLanguage: item.original_language,
+                    genreIds: item.genre_ids,
+                    backdropPath: item.backdrop_path,
+                    posterPath: item.poster_path
+                };
+            });
+
+            return {
+                page: obj.page,
+                totalResults: obj.total_results,
+                totalPages: obj.total_pages,
+                results: tvShows
+            };
+        }else {
+            return {
+                page: obj.page,
+                totalResults: obj.total_results,
+                totalPages: obj.total_pages,
+                results: []
+            };
+        }
+    }    
 }

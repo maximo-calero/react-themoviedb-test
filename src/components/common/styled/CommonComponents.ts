@@ -40,6 +40,8 @@ export const StyledPaper = styled(Paper) ({
     padding: 12,
     textAlign: 'center',
     color: 'rgba(0, 0, 0, 0.54)',
+    width: '60%',
+    height: 400,   
 });
 
 export const SearchDefinitionPaper = styled(Paper)({
