@@ -2,7 +2,8 @@ export const stringConstants = {
     'empty': '',
     'apiEntities': {
         'configuration': '/configuration',
-        'searchMovie': '/search/movie'
+        'searchMovie': '/search/movie',
+        'searchTvShow': '/search/tv'
     },
     'params': {
         'apiKey': '?api_key=',

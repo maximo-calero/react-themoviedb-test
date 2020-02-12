@@ -3,7 +3,8 @@ import './App.css';
 import Header from './components/header/Header';
 import Main from './components/Main';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import Container from '@material-ui/core/Container';
+import { AppContainer } from './components/common/styled/CommonComponents';
+
 
 
 
@@ -11,10 +12,10 @@ const App = () => {
   return (
     <React.Fragment>
       <CssBaseline />
-      <Container maxWidth="md">
+      <AppContainer maxWidth="lg">
         <Header />
         <Main />
-      </Container>
+      </AppContainer>
     </React.Fragment>    
   );
 }
