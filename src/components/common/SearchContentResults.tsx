@@ -1,7 +1,7 @@
 import React from 'react';
 import { SearchContentResultsProps } from './ControlInterfaces';
 import Grid from '@material-ui/core/Grid';
-import { SearchMovieResultsContainer } from './styled/CommonComponents';
+import { SearchMovieResultsContainer, SearchResults, SearchResultItem } from './styled/CommonComponents';
 import MediaCard from './MediaCard';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -11,39 +11,32 @@ class SearchContentResults extends React.Component<SearchContentResultsProps> {
     }
 
     render() {
-        const loader = <div className="loader">Loading ...</div>;
+        const loader = <div key={0} className="loader">Loading ...</div>;
         const items = this.props.results.map(item => {
             return (
-                <Grid className="track" key={item.id} item>
+                <SearchResultItem key={item.id}>
                     <MediaCard 
                             title={item.title} 
                             image={`${this.props.imageBaseUrl}${item.posterPath}`}
                             contentTitle={item.title}
                             contentDescription={item.shortDescription}
                                 />                                
-                </Grid>                            
+                </SearchResultItem>                            
             );
         });
         return(
 
             <SearchMovieResultsContainer>
-                <Grid container 
-                      direction='row' 
-                      justify='center' 
-                      alignItems='flex-start' 
-                      spacing={1}
+                <SearchResults
+                    pageStart={1}
+                    loadMore={this.props.loadResults}
+                    hasMore={this.props.hasMoreItems}
+                    loader={loader}
                 >
-                    <InfiniteScroll
-                        pageStart={1}
-                        loadMore={this.props.loadResults}
-                        hasMore={this.props.hasMoreItems}
-                        loader={loader}
-                    >
-                        {this.props.results.length > 0 &&
-                            items
-                        }
-                    </InfiniteScroll>
-                </Grid>
+                    {this.props.results.length > 0 &&
+                        items
+                    }
+                </SearchResults>
             </SearchMovieResultsContainer>
         );
     }

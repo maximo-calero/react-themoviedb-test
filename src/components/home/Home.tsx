@@ -84,12 +84,12 @@ class Home extends React.Component<HomeProps, HomeState>  {
         switch(this.state.searchDefinition.searchTypeValue) {
             case 'Movies':
                 const searchMovieResults: SearchResults = 
-                    await this.dataService.searchMovies(this.state.searchDefinition.searchTerm, this.state.searchResults.page + 1);
+                    await this.dataService.searchMovies(this.state.searchDefinition.searchTerm, 1);
                 this.setState(prevState => ({ ...prevState, searchResults: searchMovieResults }));
                 break;
             case 'TV Shows':
                 const searchTvShowResults: SearchResults = 
-                    await this.dataService.searchTvShows(this.state.searchDefinition.searchTerm);
+                    await this.dataService.searchTvShows(this.state.searchDefinition.searchTerm, 1);
                 this.setState(prevState => ({ ...prevState, searchResults: searchTvShowResults }));
                 break;
             default:
@@ -112,9 +112,16 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 }));
                 break;
             case 'TV Shows':
+                const stateTvShowResults: Result[] = this.state.searchResults.results.slice();
                 const searchTvShowResults: SearchResults = 
-                    await this.dataService.searchTvShows(this.state.searchDefinition.searchTerm);
-                this.setState(prevState => ({ ...prevState, searchResults: searchTvShowResults }));
+                    await this.dataService.searchTvShows(this.state.searchDefinition.searchTerm, this.state.searchResults.page + 1);
+                this.setState(prevState => ({ ...prevState, searchResults: {
+                                page: searchTvShowResults.page,
+                                totalPages: searchTvShowResults.totalPages,
+                                totalResults: searchTvShowResults.totalResults,
+                                results: stateTvShowResults.concat(searchTvShowResults.results)
+                            } 
+                }));
                 break;
             default:
                 break;

@@ -90,8 +90,8 @@ export class DataService implements IDataService {
         }
     }
 
-    public async searchTvShows(searchTerm: string): Promise<SearchResults> {
-        const query: string= `${stringConstants.params.query}${searchTerm}`;
+    public async searchTvShows(searchTerm: string, page: number): Promise<SearchResults> {
+        const query: string= `${stringConstants.params.query}${searchTerm}${stringConstants.params.page}${page.toString()}`;
         const obj: any = await this.getApiJson(stringConstants.apiEntities.searchTvShow, query);
 
         if (obj.total_results > 0) {
