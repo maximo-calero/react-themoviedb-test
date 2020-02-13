@@ -40,7 +40,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 searchTerm: '',
                 searchTypeValue: 'Movies',
                 placeholderText: 'Search Movies in The Movie Database API'
-            }
+            },
+            searchSortValue:'Title'
         }
     }
 
@@ -68,6 +69,14 @@ class Home extends React.Component<HomeProps, HomeState>  {
                     }));
     }
 
+    handleChangeSort = (event: any) => {
+        const { value } = event.target;
+        this.setState(prevState => ({ 
+                    ...prevState, 
+                    searchSortValue: value,
+                    }));
+    }    
+
     handleOnChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { value } = event.currentTarget as HTMLInputElement;
         this.setState(prevState => ({ 
@@ -85,6 +94,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
             case 'Movies':
                 const searchMovieResults: SearchResults = 
                     await this.dataService.searchMovies(this.state.searchDefinition.searchTerm, 1);
+                searchMovieResults.results.sort((a, b) => +a.releaseDate - +b.releaseDate);
                 this.setState(prevState => ({ ...prevState, searchResults: searchMovieResults }));
                 break;
             case 'TV Shows':
@@ -103,11 +113,12 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 const stateMovieResults: Result[] = this.state.searchResults.results.slice();
                 const searchMovieResults: SearchResults = 
                     await this.dataService.searchMovies(this.state.searchDefinition.searchTerm, this.state.searchResults.page + 1);
+                const sortedResults = stateMovieResults.concat(searchMovieResults.results).slice().sort((a, b) => +a.releaseDate - +b.releaseDate);
                 this.setState(prevState => ({ ...prevState, searchResults: {
                                 page: searchMovieResults.page,
                                 totalPages: searchMovieResults.totalPages,
                                 totalResults: searchMovieResults.totalResults,
-                                results: stateMovieResults.concat(searchMovieResults.results)
+                                results: sortedResults
                             } 
                 }));
                 break;
@@ -142,6 +153,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
                                   onChangeSearchInput={this.handleOnChangeSearchInput}
                                   onChangeSearchType={this.handleChangeSearchType}
                                   onClickSearch={this.handleOnClickSearch}
+                                  onChangeSort={this.handleChangeSort}
+                                  searchSortValue={this.state.searchSortValue}
                 />
                 {this.state.searchResults.totalResults === 0 &&
                     <StyledPaper>No results</StyledPaper>

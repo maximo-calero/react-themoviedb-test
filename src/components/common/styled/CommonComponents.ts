@@ -22,7 +22,7 @@ export const HomeContainer = styledmui(Container)({
 });
 
 export const StyledCard = styledmui(Card)({
-    width: 345,
+    width: 270,
     height: 330,
 });
 
