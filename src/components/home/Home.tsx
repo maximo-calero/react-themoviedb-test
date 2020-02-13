@@ -3,7 +3,7 @@ import { HomeProps } from './HomeProps';
 import { HomeState } from './HomeState';
 import { IDataService } from '../../service/DataServiceInterfaces';
 import { DataService } from '../../service/DataService';
-import { Configuration, SearchResults, TvShow, Movie } from '../../model';
+import { Configuration, SearchResults, TvShow, Movie, Result } from '../../model';
 import SearchContentResults from '../common/SearchContentResults';
 import SearchDefinition from '../common/SearchDefinition';
 import { HomeContainer, StyledPaper } from '../common/styled/CommonComponents';
@@ -84,20 +84,49 @@ class Home extends React.Component<HomeProps, HomeState>  {
         switch(this.state.searchDefinition.searchTypeValue) {
             case 'Movies':
                 const searchMovieResults: SearchResults = 
-                    await this.dataService.searchMovies(this.state.searchDefinition.searchTerm);
+                    await this.dataService.searchMovies(this.state.searchDefinition.searchTerm, 1);
                 this.setState(prevState => ({ ...prevState, searchResults: searchMovieResults }));
                 break;
             case 'TV Shows':
                 const searchTvShowResults: SearchResults = 
-                    await this.dataService.searchTvShows(this.state.searchDefinition.searchTerm);
+                    await this.dataService.searchTvShows(this.state.searchDefinition.searchTerm, 1);
                 this.setState(prevState => ({ ...prevState, searchResults: searchTvShowResults }));
                 break;
             default:
                 break;
         }
-        const searchResults: SearchResults = 
-            await this.dataService.searchMovies(this.state.searchDefinition.searchTerm);
-        this.setState(prevState => ({ ...prevState, searchResults: searchResults }));
+    }
+
+    handleLoadMoreResults = async () => {
+        switch(this.state.searchDefinition.searchTypeValue) {
+            case 'Movies':
+                const stateMovieResults: Result[] = this.state.searchResults.results.slice();
+                const searchMovieResults: SearchResults = 
+                    await this.dataService.searchMovies(this.state.searchDefinition.searchTerm, this.state.searchResults.page + 1);
+                this.setState(prevState => ({ ...prevState, searchResults: {
+                                page: searchMovieResults.page,
+                                totalPages: searchMovieResults.totalPages,
+                                totalResults: searchMovieResults.totalResults,
+                                results: stateMovieResults.concat(searchMovieResults.results)
+                            } 
+                }));
+                break;
+            case 'TV Shows':
+                const stateTvShowResults: Result[] = this.state.searchResults.results.slice();
+                const searchTvShowResults: SearchResults = 
+                    await this.dataService.searchTvShows(this.state.searchDefinition.searchTerm, this.state.searchResults.page + 1);
+                this.setState(prevState => ({ ...prevState, searchResults: {
+                                page: searchTvShowResults.page,
+                                totalPages: searchTvShowResults.totalPages,
+                                totalResults: searchTvShowResults.totalResults,
+                                results: stateTvShowResults.concat(searchTvShowResults.results)
+                            } 
+                }));
+                break;
+            default:
+                break;
+        }
+
     }
 
     render() {
@@ -119,10 +148,12 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 }                
                 {this.state.searchResults.totalResults > 0 &&
                     <SearchContentResults 
-                        imageBaseUrl={imageUrl} 
+                        imageBaseUrl={imageUrl}
+                        hasMoreItems={this.state.searchResults.page < this.state.searchResults.totalPages}
                         results={this.state.searchDefinition.searchTypeValue === '1'
                                     ? (this.state.searchResults.results as Movie[])
                                     : (this.state.searchResults.results as TvShow[])} 
+                        loadResults={this.handleLoadMoreResults}
                         />
                 }
             </HomeContainer>

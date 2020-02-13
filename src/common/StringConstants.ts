@@ -7,6 +7,7 @@ export const stringConstants = {
     },
     'params': {
         'apiKey': '?api_key=',
-        'query': '&query='
+        'query': '&query=',
+        'page': '&page='
     }
 };
