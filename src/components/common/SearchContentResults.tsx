@@ -7,20 +7,25 @@ class SearchContentResults extends React.Component<SearchContentResultsProps> {
     constructor(props: SearchContentResultsProps) {
         super(props);
     }
+    handleClickCard = (id: string) => {
+        this.props.onClickCard(id)
+    }
 
     render() {
         const loader = <div key={0} className="loader">Loading ...</div>;
         const items = this.props.results.map(item => {
             return (
                 <SearchResultItem key={item.id}>
-                    <MediaCard 
+                    <MediaCard
+                            id={item.id}
                             title={item.title} 
                             image={item.posterPath && `${this.props.imageBaseUrl}${item.posterPath}`}
                             contentTitle={item.title}
                             contentDescription={item.shortDescription}
                             releaseDate={item.releaseDate && item.releaseDate.toLocaleDateString()}
                             voteAverage={item.voteAverage}
-                                />                                
+                            onClickCard={this.handleClickCard}
+                    />           
                 </SearchResultItem>                            
             );
         });

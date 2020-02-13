@@ -5,6 +5,7 @@ export interface HomeState {
     searchResults: SearchResults;
     searchDefinition: SearchDefinitionValues;
     searchSortValue: string;
+    openDialog: boolean;
 }
 
 interface SearchDefinitionValues {

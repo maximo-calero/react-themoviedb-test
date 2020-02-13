@@ -7,6 +7,11 @@ import { Configuration, SearchResults, TvShow, Movie, Result } from '../../model
 import SearchContentResults from '../common/SearchContentResults';
 import SearchDefinition from '../common/SearchDefinition';
 import { HomeContainer, StyledPaper } from '../common/styled/CommonComponents';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 
 class Home extends React.Component<HomeProps, HomeState>  {
     dataService: IDataService;
@@ -41,7 +46,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 searchTypeValue: 'Movies',
                 placeholderText: 'Search Movies in The Movie Database API'
             },
-            searchSortValue:'Title'
+            searchSortValue:'Title',
+            openDialog: false
         }
     }
 
@@ -167,6 +173,19 @@ class Home extends React.Component<HomeProps, HomeState>  {
 
     }
 
+    handleClickCard = (id: string) => {
+        //alert('Click on card with id: ' + id);
+        this.setState(prevState => ({ ...prevState, openDialog: true }));
+    }
+
+    handleDialogOk = (event: any) => {
+        this.setState(prevState => ({ ...prevState, openDialog: false }));
+    }
+
+    handleEntering = (event: any) => {
+        alert('Entering into dialog');
+    }
+
     render() {
         const secureUrl: string = this.state.configuration.images.secureBaseUrl !== ''
                                 ? this.state.configuration.images.secureBaseUrl
@@ -194,8 +213,28 @@ class Home extends React.Component<HomeProps, HomeState>  {
                                     ? (this.state.searchResults.results as Movie[])
                                     : (this.state.searchResults.results as TvShow[])} 
                         loadResults={this.handleLoadMoreResults}
+                        onClickCard={this.handleClickCard}
                         />
                 }
+                <Dialog
+                    disableBackdropClick
+                    disableEscapeKeyDown
+                    maxWidth="md"
+                    fullWidth={true}
+                    onEntered={this.handleEntering}
+                    aria-labelledby="confirmation-dialog-title"
+                    open={this.state.openDialog}
+                >
+                <DialogTitle id="confirmation-dialog-title">Phone Ringtone</DialogTitle>
+                <DialogContent>
+
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={this.handleDialogOk} color="primary">
+                    Ok
+                    </Button>
+                </DialogActions>
+                </Dialog>                
             </HomeContainer>
         )
     }

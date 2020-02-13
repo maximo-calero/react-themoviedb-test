@@ -1,12 +1,14 @@
 import { Result } from "../../model/Result";
 
 export interface MediaCardProps {
+    id: number;
     title: string;
     image: string;
     releaseDate: string;
     voteAverage: number;
     contentTitle: string;
     contentDescription: string;
+    onClickCard: (id: string) => void;
 }
 
 export interface SearchContentResultsProps {
@@ -14,6 +16,7 @@ export interface SearchContentResultsProps {
     hasMoreItems: boolean;
     results: Result[];
     loadResults:() => void;
+    onClickCard: (id: string) => void;
 }
 
 export interface SearchDefinitionProps {
