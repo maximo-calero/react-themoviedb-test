@@ -1,7 +1,5 @@
 import React from 'react';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
-import Typography from '@material-ui/core/Typography';
 import { MediaCardProps } from './ControlInterfaces';
 import { StyledCard, StyledCardActionArea, StyledCardMedia, StyledCardAction, StyledEventTwoTone, StyledRateReviewTwoTone, StyledDescription, StyledTitle, StyledCardActionSpan, StyledCardActionSpanDiv } from './styled/CommonComponents';
 import defaultImage from '../../images/default-image_300.png';

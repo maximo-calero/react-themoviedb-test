@@ -12,7 +12,7 @@ import Typography from '@material-ui/core/Typography';
 const SearchDefinition =(props: SearchDefinitionProps) => {
     return(
         <SearchDefinitionPaper component="form" >
-            <Typography component="span">Search type: </Typography>
+            <Typography component="span">Search type:  </Typography>
             <Select
                 value={props.searchTypeValue}
                 onChange={props.onChangeSearchType}

@@ -2,7 +2,6 @@ import React from 'react';
 import { SearchContentResultsProps } from './ControlInterfaces';
 import { SearchMovieResultsContainer, SearchResults, SearchResultItem } from './styled/CommonComponents';
 import MediaCard from './MediaCard';
-import { Movie, TvShow } from '../../model';
 
 class SearchContentResults extends React.Component<SearchContentResultsProps> {
     constructor(props: SearchContentResultsProps) {
