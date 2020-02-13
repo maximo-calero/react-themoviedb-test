@@ -13,6 +13,7 @@ const App = () => {
     <React.Fragment>
       <CssBaseline />
       <AppContainer maxWidth="lg">
+        <h1>The Movie Database Search</h1>
         <Header />
         <Main />
       </AppContainer>

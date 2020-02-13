@@ -30,3 +30,9 @@ export interface SearchDefinitionProps {
     onChangeSearchInput: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onClickSearch: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }
+
+export interface ItemDetailDialogProps {
+    openDialog: boolean;
+    onEntered: (event: any) => void;
+    onClickDialogOk: (event: any) => void;
+}

@@ -7,11 +7,7 @@ import { Configuration, SearchResults, TvShow, Movie, Result } from '../../model
 import SearchContentResults from '../common/SearchContentResults';
 import SearchDefinition from '../common/SearchDefinition';
 import { HomeContainer, StyledPaper } from '../common/styled/CommonComponents';
-import Dialog from '@material-ui/core/Dialog';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogActions from '@material-ui/core/DialogActions';
-import Button from '@material-ui/core/Button';
+import ItemDetailDialog from '../common/ItemDetailDialog';
 
 class Home extends React.Component<HomeProps, HomeState>  {
     dataService: IDataService;
@@ -182,8 +178,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
         this.setState(prevState => ({ ...prevState, openDialog: false }));
     }
 
-    handleEntering = (event: any) => {
-        alert('Entering into dialog');
+    handleEntered = (event: any) => {
+        // alert('Entering into dialog');
     }
 
     render() {
@@ -216,25 +212,56 @@ class Home extends React.Component<HomeProps, HomeState>  {
                         onClickCard={this.handleClickCard}
                         />
                 }
+
+                <ItemDetailDialog 
+                    openDialog={this.state.openDialog}
+                    onEntered={this.handleEntered}
+                    onClickDialogOk={this.handleDialogOk}
+                />
+                {/* 
                 <Dialog
                     disableBackdropClick
                     disableEscapeKeyDown
                     maxWidth="md"
-                    fullWidth={true}
+                    fullWidth={false}
                     onEntered={this.handleEntering}
                     aria-labelledby="confirmation-dialog-title"
                     open={this.state.openDialog}
-                >
+                >                
                 <DialogTitle id="confirmation-dialog-title">Phone Ringtone</DialogTitle>
                 <DialogContent>
-
+                    <Grid container>
+                        <Grid item>
+                            <img src='https://image.tmdb.org/t/p//w185//bVq65huQ8vHDd1a4Z37QtuyEvpA.jpg'  />
+                        </Grid>
+                        <Grid item>
+                            <Grid container direction='column' >
+                                <Grid item>
+                                    <Typography component='h3'>
+                                        Complete Overview
+                                    </Typography>
+                                    <Typography component='h4'>
+                                        Overview content
+                                    </Typography>
+                                </Grid>
+                                <Grid item>
+                                    <Typography component='h3'>
+                                        Popularity
+                                    </Typography>
+                                    <Typography component='h4'>
+                                        19.982
+                                    </Typography>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={this.handleDialogOk} color="primary">
                     Ok
                     </Button>
                 </DialogActions>
-                </Dialog>                
+                </Dialog>                 */}
             </HomeContainer>
         )
     }
