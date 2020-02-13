@@ -40,7 +40,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 searchTerm: '',
                 searchTypeValue: 'Movies',
                 placeholderText: 'Search Movies in The Movie Database API'
-            }
+            },
+            searchSortValue:'Title'
         }
     }
 
@@ -68,6 +69,14 @@ class Home extends React.Component<HomeProps, HomeState>  {
                     }));
     }
 
+    handleChangeSort = (event: any) => {
+        const { value } = event.target;
+        this.setState(prevState => ({ 
+                    ...prevState, 
+                    searchSortValue: value,
+                    }));
+    }    
+
     handleOnChangeSearchInput = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
         const { value } = event.currentTarget as HTMLInputElement;
         this.setState(prevState => ({ 
@@ -79,17 +88,42 @@ class Home extends React.Component<HomeProps, HomeState>  {
                     }));        
     }
 
+    sortResults = (results: Result[]) => {
+        switch(this.state.searchSortValue) {
+            case 'Title':
+                results.sort((a, b) => {
+                    if (a.title < b.title)
+                        return -1;
+                    if (a.title > b.title)
+                        return 1;
+                    return 0;
+                });
+                break;
+            case 'Release date': 
+                results.sort((a, b) => +a.releaseDate - +b.releaseDate);
+                break;
+            case 'Vote average':
+                results.sort((a, b) => b.voteAverage - a.voteAverage);
+                break;
+            default:
+                break;
+        }
+    }
+
     handleOnClickSearch = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         event.preventDefault();
         switch(this.state.searchDefinition.searchTypeValue) {
             case 'Movies':
                 const searchMovieResults: SearchResults = 
                     await this.dataService.searchMovies(this.state.searchDefinition.searchTerm, 1);
+                // searchMovieResults.results.sort((a, b) => +a.releaseDate - +b.releaseDate);
+                this.sortResults(searchMovieResults.results);
                 this.setState(prevState => ({ ...prevState, searchResults: searchMovieResults }));
                 break;
             case 'TV Shows':
                 const searchTvShowResults: SearchResults = 
                     await this.dataService.searchTvShows(this.state.searchDefinition.searchTerm, 1);
+                this.sortResults(searchTvShowResults.results);
                 this.setState(prevState => ({ ...prevState, searchResults: searchTvShowResults }));
                 break;
             default:
@@ -103,11 +137,13 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 const stateMovieResults: Result[] = this.state.searchResults.results.slice();
                 const searchMovieResults: SearchResults = 
                     await this.dataService.searchMovies(this.state.searchDefinition.searchTerm, this.state.searchResults.page + 1);
+                const sortedMovieResults = stateMovieResults.concat(searchMovieResults.results);
+                this.sortResults(sortedMovieResults);
                 this.setState(prevState => ({ ...prevState, searchResults: {
                                 page: searchMovieResults.page,
                                 totalPages: searchMovieResults.totalPages,
                                 totalResults: searchMovieResults.totalResults,
-                                results: stateMovieResults.concat(searchMovieResults.results)
+                                results: sortedMovieResults
                             } 
                 }));
                 break;
@@ -115,11 +151,13 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 const stateTvShowResults: Result[] = this.state.searchResults.results.slice();
                 const searchTvShowResults: SearchResults = 
                     await this.dataService.searchTvShows(this.state.searchDefinition.searchTerm, this.state.searchResults.page + 1);
+                    const sortedTvShowResults = stateTvShowResults.concat(searchTvShowResults.results);
+                    this.sortResults(sortedTvShowResults);
                 this.setState(prevState => ({ ...prevState, searchResults: {
                                 page: searchTvShowResults.page,
                                 totalPages: searchTvShowResults.totalPages,
                                 totalResults: searchTvShowResults.totalResults,
-                                results: stateTvShowResults.concat(searchTvShowResults.results)
+                                results: sortedTvShowResults
                             } 
                 }));
                 break;
@@ -142,6 +180,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
                                   onChangeSearchInput={this.handleOnChangeSearchInput}
                                   onChangeSearchType={this.handleChangeSearchType}
                                   onClickSearch={this.handleOnClickSearch}
+                                  onChangeSort={this.handleChangeSort}
+                                  searchSortValue={this.state.searchSortValue}
                 />
                 {this.state.searchResults.totalResults === 0 &&
                     <StyledPaper>No results</StyledPaper>

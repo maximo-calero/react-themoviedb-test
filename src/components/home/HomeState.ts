@@ -4,6 +4,7 @@ export interface HomeState {
     configuration: Configuration;
     searchResults: SearchResults;
     searchDefinition: SearchDefinitionValues;
+    searchSortValue: string;
 }
 
 interface SearchDefinitionValues {

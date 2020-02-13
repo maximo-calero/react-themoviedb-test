@@ -7,19 +7,20 @@ import { SearchDefinitionPaper,
 import Select from '@material-ui/core/Select';
 import { SearchDefinitionProps } from './ControlInterfaces';
 import MenuItem from '@material-ui/core/MenuItem';
+import Typography from '@material-ui/core/Typography';
 
 const SearchDefinition =(props: SearchDefinitionProps) => {
     return(
         <SearchDefinitionPaper component="form" >
+            <Typography component="span">Search type:  </Typography>
             <Select
-                id="demo-customized-select-native"
                 value={props.searchTypeValue}
                 onChange={props.onChangeSearchType}
             >
                 <MenuItem value={'Movies'}>Movies</MenuItem>
                 <MenuItem value={'TV Shows'}>TV Shows</MenuItem>
             </Select>            
-            <SearchDefinitionDivider  orientation="vertical" />
+            <SearchDefinitionDivider orientation="vertical" flexItem />
             <SearchInput
                 placeholder={props.placeHolderText}
                 inputProps={{ 'aria-label': 'search movies' }}
@@ -33,7 +34,16 @@ const SearchDefinition =(props: SearchDefinitionProps) => {
             >
                 <SearchIcon />
             </SearchDefinitionIconButton>
-
+            <SearchDefinitionDivider  orientation="vertical" />
+            <Select
+                value={props.searchSortValue}
+                onChange={props.onChangeSort}
+                label='Order by'
+            >
+                <MenuItem value={'Title'}>Title</MenuItem>
+                <MenuItem value={'Release date'}>Release date</MenuItem>
+                <MenuItem value={'Vote average'}>Vote average (DESC)</MenuItem>
+            </Select>
         </SearchDefinitionPaper>
     );
 }

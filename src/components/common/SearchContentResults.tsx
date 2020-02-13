@@ -1,9 +1,7 @@
 import React from 'react';
 import { SearchContentResultsProps } from './ControlInterfaces';
-import Grid from '@material-ui/core/Grid';
 import { SearchMovieResultsContainer, SearchResults, SearchResultItem } from './styled/CommonComponents';
 import MediaCard from './MediaCard';
-import InfiniteScroll from 'react-infinite-scroller';
 
 class SearchContentResults extends React.Component<SearchContentResultsProps> {
     constructor(props: SearchContentResultsProps) {
@@ -17,9 +15,11 @@ class SearchContentResults extends React.Component<SearchContentResultsProps> {
                 <SearchResultItem key={item.id}>
                     <MediaCard 
                             title={item.title} 
-                            image={`${this.props.imageBaseUrl}${item.posterPath}`}
+                            image={item.posterPath && `${this.props.imageBaseUrl}${item.posterPath}`}
                             contentTitle={item.title}
                             contentDescription={item.shortDescription}
+                            releaseDate={item.releaseDate && item.releaseDate.toLocaleDateString()}
+                            voteAverage={item.voteAverage}
                                 />                                
                 </SearchResultItem>                            
             );
