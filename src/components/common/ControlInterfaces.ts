@@ -3,6 +3,8 @@ import { Result } from "../../model/Result";
 export interface MediaCardProps {
     title: string;
     image: string;
+    releaseDate: string;
+    voteAverage: number;
     contentTitle: string;
     contentDescription: string;
 }

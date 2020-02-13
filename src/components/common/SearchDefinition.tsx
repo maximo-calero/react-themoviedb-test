@@ -20,7 +20,7 @@ const SearchDefinition =(props: SearchDefinitionProps) => {
                 <MenuItem value={'Movies'}>Movies</MenuItem>
                 <MenuItem value={'TV Shows'}>TV Shows</MenuItem>
             </Select>            
-            <SearchDefinitionDivider  orientation="vertical" />
+            <SearchDefinitionDivider orientation="vertical" flexItem />
             <SearchInput
                 placeholder={props.placeHolderText}
                 inputProps={{ 'aria-label': 'search movies' }}
@@ -42,7 +42,7 @@ const SearchDefinition =(props: SearchDefinitionProps) => {
             >
                 <MenuItem value={'Title'}>Title</MenuItem>
                 <MenuItem value={'Release date'}>Release date</MenuItem>
-                <MenuItem value={'Vote average'}>Vote average</MenuItem>
+                <MenuItem value={'Vote average'}>Vote average (DESC)</MenuItem>
             </Select>
         </SearchDefinitionPaper>
     );

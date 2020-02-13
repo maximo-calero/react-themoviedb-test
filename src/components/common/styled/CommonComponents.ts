@@ -1,4 +1,3 @@
-import React from 'react';
 import { styled as styledmui} from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -10,6 +9,10 @@ import Divider from '@material-ui/core/Divider';
 import InputBase from '@material-ui/core/InputBase';
 import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
+import CardActions from '@material-ui/core/CardActions';
+import Typography from '@material-ui/core/Typography';
+import RateReviewTwoTone from '@material-ui/icons/RateReviewTwoTone';
+import EventTwoTone from '@material-ui/icons/EventTwoTone';
 
 export const AppContainer = styledmui(Container)({
 
@@ -26,6 +29,24 @@ export const StyledCard = styledmui(Card)({
     height: 330,
 });
 
+export const StyledTitle = styledmui(Typography)({
+    fontSize: '0.9rem',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeight: 400,
+    lineHeight: 1.334,
+    letterSpacing: '0em',
+});
+
+export const StyledDescription = styledmui(Typography)({
+    fontSize: '0.9rem',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeight: 400,
+    lineHeight: 1.334,
+    letterSpacing: '0em',
+});
+
+
+
 export const StyledCardActionArea = styledmui(CardActionArea)({
     minHeight: 285,
 });
@@ -33,6 +54,49 @@ export const StyledCardActionArea = styledmui(CardActionArea)({
 export const StyledCardMedia = styledmui(CardMedia)({
     height: 140,
     backgroundSize: 92,
+});
+
+export const StyledCardAction = styledmui(CardActions)({
+    display: 'flex',
+    padding: 8,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+})
+
+export const StyledCardActionSpanDiv = styled.div({
+    display: 'flex',
+    alignItems: 'center'
+});
+
+export const StyledCardActionSpan = styled.span({
+    fontSize: '0.9rem',
+    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+    fontWeight: 400,
+    lineHeight: 1.5,
+    letterSpacing: '0.00938em',
+    paddingLeft: '0.2rem'
+});
+
+export const StyledEventTwoTone = styled(EventTwoTone)({
+    fill: 'currentColor',
+    width: '1em',
+    height: '1em',
+    display: 'inline-block',
+    fontSize: '1.3rem',
+    transition: 'fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+    flexShrink: 0,
+    userSelect: 'none',
+});
+
+export const StyledRateReviewTwoTone = styled(RateReviewTwoTone)({
+    fill: 'currentColor',
+    width: '1em',
+    height: '1em',
+    display: 'inline-block',
+    fontSize: '1.3rem',
+    transition: 'fill 200ms cubic-bezier(0.4, 0, 0.2, 1) 0ms',
+    flexShrink: 0,
+    userSelect: 'none',
 });
 
 export const SearchMovieResultsContainer = styledmui(Container) ({
@@ -43,7 +107,7 @@ export const StyledPaper = styledmui(Paper) ({
     padding: 12,
     textAlign: 'center',
     color: 'rgba(0, 0, 0, 0.54)',
-    width: '60%',
+    width: '100%',
     height: 400,   
 });
 
@@ -52,7 +116,7 @@ export const SearchDefinitionPaper = styledmui(Paper)({
     marginBottom: 10,
     display: 'flex',
     alignItems: 'center',
-    width: '60%',
+    width: '100%',
     backgroundColor: '#fff',
 });
 
