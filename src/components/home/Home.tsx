@@ -3,10 +3,12 @@ import { HomeProps } from './HomeProps';
 import { HomeState } from './HomeState';
 import { IDataService } from '../../service/DataServiceInterfaces';
 import { DataService } from '../../service/DataService';
-import { Configuration, SearchResults, TvShow, Movie, Result } from '../../model';
+import { Configuration, SearchResults, TvShow, Movie, Result, Item } from '../../model';
 import SearchContentResults from '../common/SearchContentResults';
 import SearchDefinition from '../common/SearchDefinition';
 import { HomeContainer, StyledPaper } from '../common/styled/CommonComponents';
+import ItemDetailDialog from '../common/ItemDetailDialog';
+import { stringConstants } from '../../common/StringConstants';
 
 class Home extends React.Component<HomeProps, HomeState>  {
     dataService: IDataService;
@@ -35,19 +37,34 @@ class Home extends React.Component<HomeProps, HomeState>  {
 
         this.state = {
             configuration: this.emptyConfiguration,
+            moviesGenres: [],
+            tvShowGenres: [],
             searchResults: this.emptySearchResults,
             searchDefinition: {
                 searchTerm: '',
                 searchTypeValue: 'Movies',
                 placeholderText: 'Search Movies in The Movie Database API'
             },
-            searchSortValue:'Title'
+            searchSortValue:'Title',
+            dialogProps: {
+                loading: false,
+                openDialog: false,
+                dialogItem: undefined,
+                genres: [],
+                keywords: []
+            }
         }
     }
 
     async componentDidMount() {
         const conf: Configuration = await this.dataService.getConfiguration();
-        this.setState({ configuration: conf });
+        const movieGenres: Item[] = await this.dataService.getGenres(stringConstants.apiEntities.movie);
+        const tvShowGenres: Item[] = await this.dataService.getGenres(stringConstants.apiEntities.tv);
+        this.setState({ 
+            configuration: conf, 
+            moviesGenres: movieGenres, 
+            tvShowGenres: tvShowGenres 
+        });
     }
 
     handleChangeSearchType = (event: any) => {
@@ -167,11 +184,73 @@ class Home extends React.Component<HomeProps, HomeState>  {
 
     }
 
+    handleClickCard = (id: string) => {
+        const itemResult: Result = 
+            this.state.searchResults.results.filter(item => item.id === +id)[0];
+
+        let genres: string[] = [];
+        switch (this.state.searchDefinition.searchTypeValue) {
+            case 'Movies':
+                if (itemResult.genreIds.length > 0) {
+                        genres = itemResult.genreIds.map(genreId => {
+                                return this.state.moviesGenres.filter(item => item.id === genreId)[0].name;
+                        });
+                }
+                break;
+            case 'TV Shows':
+                if (itemResult.genreIds.length > 0) {
+                        genres = itemResult.genreIds.map(genreId => {
+                            return this.state.tvShowGenres.filter(item => item.id === genreId)[0].name;
+                    });
+                }
+                break;
+            default:
+                break;
+        }
+
+        this.setState(prevState => ({ ...prevState, 
+            dialogProps: {
+                ...prevState.dialogProps,
+                loading: true,
+                openDialog: true,
+                dialogItem: itemResult,
+                genres: genres
+            }
+        }));
+    }
+
+    handleDialogOk = (event: any) => {
+        this.setState(prevState => ({ ...prevState, 
+            dialogProps: {
+                ...prevState.dialogProps,
+                openDialog: false,
+            }
+        }));        
+    }
+
+    handleEntered = async (event: any) => {
+        const type: string = this.state.searchDefinition.searchTypeValue === 'Movies'
+                                ? stringConstants.apiEntities.movie
+                                : stringConstants.apiEntities.tv;
+        if (this.state.dialogProps.dialogItem) {
+            const keywords: Item[] = 
+                await this.dataService.getKeywords(this.state.dialogProps.dialogItem.id.toString(), type);
+            this.setState(prevState => ({ ...prevState, 
+                dialogProps: {
+                    ...prevState.dialogProps,
+                    loading: false, 
+                    keywords: keywords
+                }
+            }));
+        }
+    }
+
     render() {
         const secureUrl: string = this.state.configuration.images.secureBaseUrl !== ''
                                 ? this.state.configuration.images.secureBaseUrl
                                 : '';
         const imageUrl: string = secureUrl !== '' ? `${secureUrl}/${this.state.configuration.images.posterSizes.w92}/` : '';
+        const imageUrlW185: string = secureUrl !== '' ? `${secureUrl}/${this.state.configuration.images.posterSizes.w185}/` : '';
         return (
             <HomeContainer>
                 <SearchDefinition searchTerm={this.state.searchDefinition.searchTerm} 
@@ -194,8 +273,20 @@ class Home extends React.Component<HomeProps, HomeState>  {
                                     ? (this.state.searchResults.results as Movie[])
                                     : (this.state.searchResults.results as TvShow[])} 
                         loadResults={this.handleLoadMoreResults}
+                        onClickCard={this.handleClickCard}
                         />
                 }
+
+                <ItemDetailDialog 
+                    baseImageUrl={imageUrlW185}
+                    openDialog={this.state.dialogProps.openDialog}
+                    showBackdrop={this.state.dialogProps.loading}
+                    dialogItem={this.state.dialogProps.dialogItem && this.state.dialogProps.dialogItem}
+                    genres={this.state.dialogProps.genres}
+                    keywords={this.state.dialogProps.keywords}
+                    onEntered={this.handleEntered}
+                    onClickDialogOk={this.handleDialogOk}
+                />
             </HomeContainer>
         )
     }

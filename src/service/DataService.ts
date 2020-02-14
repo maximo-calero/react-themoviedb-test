@@ -1,5 +1,5 @@
 import { IDataService } from "./DataServiceInterfaces";
-import { Configuration, SearchResults, Movie, TvShow } from "../model";
+import { Configuration, SearchResults, Movie, TvShow, Item } from "../model";
 import { stringConstants } from "../common/StringConstants";
 import { stringToEnum, stringToDate } from "../common/FunctionsHelper";
 
@@ -26,6 +26,42 @@ export class DataService implements IDataService {
             throw new Error(response.statusText)
         }
         return await response.json();
+    }
+
+    public async getGenres(type: string): Promise<Item[]> {
+        const obj: any = await this.getApiJson(`${stringConstants.apiEntities.genre}${type}list`)
+        if (obj.genres.length > 0) {
+            return (obj.genres as any[]).map(item => {
+                return {
+                    id: item.id,
+                    name: item.name
+                };
+            })
+        }else {
+            return []
+        }
+    }
+
+    public async getKeywords(id: string, type:string): Promise<Item[]> {
+        const obj: any = await this.getApiJson(`${type}${id}${stringConstants.apiEntities.keywords}`);
+        
+        if (obj.keywords && obj.keywords.length > 0) {
+            return (obj.keywords as any[]).map(item => {
+                return {
+                    id: item.id,
+                    name: item.name
+                };
+            });
+        }else if (obj.results && obj.results.length){
+            return (obj.results as any[]).map(item => {
+                return {
+                    id: item.id,
+                    name: item.name
+                };
+            });
+        }else {
+            return []
+        }
     }
 
     public async getConfiguration(): Promise<Configuration> {
@@ -64,7 +100,7 @@ export class DataService implements IDataService {
                     video: item.video,
                     voteCount: item.vote_count,
                     voteAverage: item.vote_average,
-                    releaseDate: stringToDate(item.release_date),
+                    releaseDate: item.release_date && stringToDate(item.release_date),
                     originalLanguage: item.original_language,
                     originalTitle: item.original_title,
                     genreIds: item.genre_ids,

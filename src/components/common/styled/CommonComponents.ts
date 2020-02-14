@@ -5,14 +5,14 @@ import CardMedia from '@material-ui/core/CardMedia';
 import Paper from '@material-ui/core/Paper';
 import Container from '@material-ui/core/Container';
 import IconButton from '@material-ui/core/IconButton';
-import Divider from '@material-ui/core/Divider';
-import InputBase from '@material-ui/core/InputBase';
 import InfiniteScroll from 'react-infinite-scroller';
 import styled from 'styled-components';
 import CardActions from '@material-ui/core/CardActions';
 import Typography from '@material-ui/core/Typography';
 import RateReviewTwoTone from '@material-ui/icons/RateReviewTwoTone';
 import EventTwoTone from '@material-ui/icons/EventTwoTone';
+import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 
 export const AppContainer = styledmui(Container)({
 
@@ -112,26 +112,43 @@ export const StyledPaper = styledmui(Paper) ({
 });
 
 export const SearchDefinitionPaper = styledmui(Paper)({
-    padding: '0px 4px',
+    padding: '15px 10px 5px',
     marginBottom: 10,
     display: 'flex',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     width: '100%',
     backgroundColor: '#fff',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
 });
 
 export const SearchDefinitionIconButton = styledmui(IconButton)({
     padding: 10,
 });
 
-export const SearchDefinitionDivider = styledmui(Divider)({
-    height: 28,
-    margin: 4,
-});
-
-export const SearchInput = styledmui(InputBase)({
-    marginLeft: 8,
-    flex: 1,
+export const SearchInput = styledmui(TextField)({
+    root: {
+        '& label.Mui-focused': {
+          color: 'green',
+        },
+        '& .MuiInput-underline:after': {
+          borderBottomColor: 'green',
+        },
+        '& .MuiOutlinedInput-root': {
+          '& fieldset': {
+            borderColor: 'red',
+          },
+          '&:hover fieldset': {
+            borderColor: 'yellow',
+          },
+          '&.Mui-focused fieldset': {
+            borderColor: 'green',
+          },
+        },
+      },
+      marginLeft: 8,
+      flex: 1,      
 });
 
 export const SearchResults = styledmui(InfiniteScroll)({

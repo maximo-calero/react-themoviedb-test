@@ -2,30 +2,33 @@ import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
 import { SearchDefinitionPaper, 
          SearchDefinitionIconButton, 
-         SearchDefinitionDivider, 
          SearchInput} from './styled/CommonComponents';
-import Select from '@material-ui/core/Select';
 import { SearchDefinitionProps } from './ControlInterfaces';
 import MenuItem from '@material-ui/core/MenuItem';
-import Typography from '@material-ui/core/Typography';
+import TextField from '@material-ui/core/TextField';
 
 const SearchDefinition =(props: SearchDefinitionProps) => {
     return(
         <SearchDefinitionPaper component="form" >
-            <Typography component="span">Search type:  </Typography>
-            <Select
+            <TextField
+                id="outlined-select-currency"
+                select
+                label="Search Type"
                 value={props.searchTypeValue}
                 onChange={props.onChangeSearchType}
+                helperText="Please select your search type"
+                variant="outlined"
             >
                 <MenuItem value={'Movies'}>Movies</MenuItem>
                 <MenuItem value={'TV Shows'}>TV Shows</MenuItem>
-            </Select>            
-            <SearchDefinitionDivider orientation="vertical" flexItem />
+            </TextField>            
             <SearchInput
-                placeholder={props.placeHolderText}
+                // placeholder={props.placeHolderText}
                 inputProps={{ 'aria-label': 'search movies' }}
                 onChange={props.onChangeSearchInput}
                 value={props.searchTerm}
+                label={props.placeHolderText}
+                variant="outlined"
             />
             <SearchDefinitionIconButton 
                 type="submit"  
@@ -34,16 +37,19 @@ const SearchDefinition =(props: SearchDefinitionProps) => {
             >
                 <SearchIcon />
             </SearchDefinitionIconButton>
-            <SearchDefinitionDivider  orientation="vertical" />
-            <Select
+            <TextField
+                id="outlined-select-currency"
+                select
+                label="Sort by"
                 value={props.searchSortValue}
                 onChange={props.onChangeSort}
-                label='Order by'
+                helperText="Please select the field to sort results"
+                variant="outlined"
             >
                 <MenuItem value={'Title'}>Title</MenuItem>
                 <MenuItem value={'Release date'}>Release date</MenuItem>
                 <MenuItem value={'Vote average'}>Vote average (DESC)</MenuItem>
-            </Select>
+            </TextField>              
         </SearchDefinitionPaper>
     );
 }

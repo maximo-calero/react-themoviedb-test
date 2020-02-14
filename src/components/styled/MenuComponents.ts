@@ -10,7 +10,7 @@ export const MenuBar = styled.ul `
     height: 40px;
     font-size: 1.15em;
     color: rgb(102, 102, 102);
-    width:80%;    
+    width:100%;    
 `
 
 export const MenuItem = styled.li `

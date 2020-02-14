@@ -1,12 +1,15 @@
 import { Result } from "../../model/Result";
+import { Item } from "../../model";
 
 export interface MediaCardProps {
+    id: number;
     title: string;
     image: string;
     releaseDate: string;
     voteAverage: number;
     contentTitle: string;
     contentDescription: string;
+    onClickCard: (id: string) => void;
 }
 
 export interface SearchContentResultsProps {
@@ -14,6 +17,7 @@ export interface SearchContentResultsProps {
     hasMoreItems: boolean;
     results: Result[];
     loadResults:() => void;
+    onClickCard: (id: string) => void;
 }
 
 export interface SearchDefinitionProps {
@@ -26,4 +30,15 @@ export interface SearchDefinitionProps {
     onChangeSort: (event: any) => void;
     onChangeSearchInput: (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
     onClickSearch: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+export interface ItemDetailDialogProps {
+    baseImageUrl: string;
+    openDialog: boolean;
+    showBackdrop: boolean;
+    dialogItem: Result | undefined;
+    genres: string[];
+    keywords: Item[];
+    onEntered: (event: any) => void;
+    onClickDialogOk: (event: any) => void;
 }
