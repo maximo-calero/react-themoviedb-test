@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.js": "/react-themoviedb-test/static/js/main.f73e7208.chunk.js",
-    "main.js.map": "/react-themoviedb-test/static/js/main.f73e7208.chunk.js.map",
+    "main.js": "/react-themoviedb-test/static/js/main.c0243531.chunk.js",
+    "main.js.map": "/react-themoviedb-test/static/js/main.c0243531.chunk.js.map",
     "runtime-main.js": "/react-themoviedb-test/static/js/runtime-main.621f7043.js",
     "runtime-main.js.map": "/react-themoviedb-test/static/js/runtime-main.621f7043.js.map",
-    "static/js/2.32248723.chunk.js": "/react-themoviedb-test/static/js/2.32248723.chunk.js",
-    "static/js/2.32248723.chunk.js.map": "/react-themoviedb-test/static/js/2.32248723.chunk.js.map",
+    "static/js/2.d8155fe2.chunk.js": "/react-themoviedb-test/static/js/2.d8155fe2.chunk.js",
+    "static/js/2.d8155fe2.chunk.js.map": "/react-themoviedb-test/static/js/2.d8155fe2.chunk.js.map",
     "index.html": "/react-themoviedb-test/index.html",
-    "precache-manifest.1ad9be1eaa029c355f7d803a0dbbcc33.js": "/react-themoviedb-test/precache-manifest.1ad9be1eaa029c355f7d803a0dbbcc33.js",
+    "precache-manifest.9da20f40bd77483d968a9850c769a738.js": "/react-themoviedb-test/precache-manifest.9da20f40bd77483d968a9850c769a738.js",
     "service-worker.js": "/react-themoviedb-test/service-worker.js",
-    "static/js/2.32248723.chunk.js.LICENSE.txt": "/react-themoviedb-test/static/js/2.32248723.chunk.js.LICENSE.txt",
+    "static/js/2.d8155fe2.chunk.js.LICENSE.txt": "/react-themoviedb-test/static/js/2.d8155fe2.chunk.js.LICENSE.txt",
     "static/media/default-image_300.png": "/react-themoviedb-test/static/media/default-image_300.2d2ebf33.png"
   },
   "entrypoints": [
     "static/js/runtime-main.621f7043.js",
-    "static/js/2.32248723.chunk.js",
-    "static/js/main.f73e7208.chunk.js"
+    "static/js/2.d8155fe2.chunk.js",
+    "static/js/main.c0243531.chunk.js"
   ]
 }
