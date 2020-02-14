@@ -19,13 +19,21 @@ const useStyles = makeStyles((theme: Theme) =>
             marginRight: '0.900rem',
         },
         secondColumn: {
-            width: '40%',
+            width: '35%',
+            margin: '0.700rem'
         },
         thirdColumn: {
-            width: '40%',
+            width: '35%',
         },
-        keywordChip: {
-            margin: '0.050rem',
+        chip: {
+            margin: '0.200rem',
+        },
+        genreChip:{
+            backgroundColor: 'powderblue'
+        },
+        keyWordChip: {
+            backgroundColor: 'royalblue',
+            color: 'white'
         },
         backdrop: {
             zIndex: theme.zIndex.drawer + 1,
@@ -76,20 +84,6 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                                     {props.dialogItem && props.dialogItem.popularity}
                                 </Typography>
                             </Grid>
-                            {/* <Grid item>
-                                <Typography variant="h6" gutterBottom>
-                                    Keywords
-                                </Typography>
-                                <div>
-                                    {props.keywords.length >0 &&
-                                        props.keywords.map(item => {
-                                            return(
-                                                <Chip className={styles.keywordChip} key={item.id} label={item.name} />
-                                            )
-                                        })
-                                    }
-                                </div>                    
-                            </Grid> */}
                         </Grid>
                     </Grid>
                     <Grid item className={styles.thirdColumn}>
@@ -102,7 +96,7 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                                     {props.genres.length > 0 &&
                                         props.genres.map(item => {
                                             return(
-                                                <Chip className={styles.keywordChip} key={item} label={item} />
+                                                <Chip className={`${styles.chip} ${styles.genreChip}`} key={item} label={item} />
                                             )
                                         })
                                     }
@@ -119,7 +113,7 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                                     {props.keywords.length > 0 &&
                                         props.keywords.map(item => {
                                             return(
-                                                <Chip className={styles.keywordChip} key={item.id} label={item.name} />
+                                                <Chip className={`${styles.chip} ${styles.keyWordChip}`} key={item.id} label={item.name} />
                                             )
                                         })
                                     }

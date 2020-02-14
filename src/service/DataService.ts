@@ -100,7 +100,7 @@ export class DataService implements IDataService {
                     video: item.video,
                     voteCount: item.vote_count,
                     voteAverage: item.vote_average,
-                    releaseDate: stringToDate(item.release_date),
+                    releaseDate: item.release_date && stringToDate(item.release_date),
                     originalLanguage: item.original_language,
                     originalTitle: item.original_title,
                     genreIds: item.genre_ids,

@@ -60,7 +60,6 @@ class Home extends React.Component<HomeProps, HomeState>  {
         const conf: Configuration = await this.dataService.getConfiguration();
         const movieGenres: Item[] = await this.dataService.getGenres(stringConstants.apiEntities.movie);
         const tvShowGenres: Item[] = await this.dataService.getGenres(stringConstants.apiEntities.tv);
-        // const testKeyword: Item[] = await this.dataService.getKeywords('240', stringConstants.apiEntities.movie)
         this.setState({ 
             configuration: conf, 
             moviesGenres: movieGenres, 
@@ -198,7 +197,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
                         });
                 }
                 break;
-            case 'Tv Shows':
+            case 'TV Shows':
                 if (itemResult.genreIds.length > 0) {
                         genres = itemResult.genreIds.map(genreId => {
                             return this.state.tvShowGenres.filter(item => item.id === genreId)[0].name;
@@ -223,11 +222,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
     handleDialogOk = (event: any) => {
         this.setState(prevState => ({ ...prevState, 
             dialogProps: {
-                loading: false,
+                ...prevState.dialogProps,
                 openDialog: false,
-                dialogItem: undefined,
-                genres: [],
-                keywords: []
             }
         }));        
     }
@@ -291,50 +287,6 @@ class Home extends React.Component<HomeProps, HomeState>  {
                     onEntered={this.handleEntered}
                     onClickDialogOk={this.handleDialogOk}
                 />
-                {/* 
-                <Dialog
-                    disableBackdropClick
-                    disableEscapeKeyDown
-                    maxWidth="md"
-                    fullWidth={false}
-                    onEntered={this.handleEntering}
-                    aria-labelledby="confirmation-dialog-title"
-                    open={this.state.openDialog}
-                >                
-                <DialogTitle id="confirmation-dialog-title">Phone Ringtone</DialogTitle>
-                <DialogContent>
-                    <Grid container>
-                        <Grid item>
-                            <img src='https://image.tmdb.org/t/p//w185//bVq65huQ8vHDd1a4Z37QtuyEvpA.jpg'  />
-                        </Grid>
-                        <Grid item>
-                            <Grid container direction='column' >
-                                <Grid item>
-                                    <Typography component='h3'>
-                                        Complete Overview
-                                    </Typography>
-                                    <Typography component='h4'>
-                                        Overview content
-                                    </Typography>
-                                </Grid>
-                                <Grid item>
-                                    <Typography component='h3'>
-                                        Popularity
-                                    </Typography>
-                                    <Typography component='h4'>
-                                        19.982
-                                    </Typography>
-                                </Grid>
-                            </Grid>
-                        </Grid>
-                    </Grid>
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={this.handleDialogOk} color="primary">
-                    Ok
-                    </Button>
-                </DialogActions>
-                </Dialog>                 */}
             </HomeContainer>
         )
     }
