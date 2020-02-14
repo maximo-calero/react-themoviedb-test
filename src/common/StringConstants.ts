@@ -3,7 +3,11 @@ export const stringConstants = {
     'apiEntities': {
         'configuration': '/configuration',
         'searchMovie': '/search/movie',
-        'searchTvShow': '/search/tv'
+        'searchTvShow': '/search/tv',
+        'genre': '/genre',
+        'movie': '/movie/',
+        'tv': '/tv/',
+        'keywords': '/keywords'
     },
     'params': {
         'apiKey': '?api_key=',

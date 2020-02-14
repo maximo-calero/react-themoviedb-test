@@ -1,4 +1,5 @@
 import { Result } from "../../model/Result";
+import { Item } from "../../model";
 
 export interface MediaCardProps {
     id: number;
@@ -32,7 +33,10 @@ export interface SearchDefinitionProps {
 }
 
 export interface ItemDetailDialogProps {
+    baseImageUrl: string;
     openDialog: boolean;
+    dialogItem: Result | undefined;
+    keywords: Item[];
     onEntered: (event: any) => void;
     onClickDialogOk: (event: any) => void;
 }

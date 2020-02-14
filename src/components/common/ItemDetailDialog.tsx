@@ -7,8 +7,12 @@ import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { ItemDetailDialogProps } from './ControlInterfaces';
+import defaultImage from '../../images/default-image_300.png';
 
 const ItemDetailDialog = (props: ItemDetailDialogProps) => {
+    const imageUrl = props.dialogItem && props.dialogItem.posterPath 
+                        ? `${props.baseImageUrl}${props.dialogItem?.posterPath}`
+                        : defaultImage;
     return (
         <Dialog
         disableBackdropClick
@@ -19,20 +23,20 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
         aria-labelledby="confirmation-dialog-title"
         open={props.openDialog}
     >
-    <DialogTitle id="confirmation-dialog-title">Phone Ringtone</DialogTitle>
+    <DialogTitle id="confirmation-dialog-title">{props.dialogItem && props.dialogItem.title}</DialogTitle>
     <DialogContent>
         <Grid container>
             <Grid item>
-                <img src='https://image.tmdb.org/t/p//w185//bVq65huQ8vHDd1a4Z37QtuyEvpA.jpg'  />
+                <img src={imageUrl} alt={props.dialogItem && props.dialogItem.title} />
             </Grid>
             <Grid item>
                 <Grid container direction='column' >
                     <Grid item>
                         <Typography component='h3'>
-                            Complete Overview
+                            Overview
                         </Typography>
                         <Typography component='h4'>
-                            Overview content
+                            {props.dialogItem && props.dialogItem.overview}
                         </Typography>
                     </Grid>
                     <Grid item>
@@ -40,7 +44,7 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                             Popularity
                         </Typography>
                         <Typography component='h4'>
-                            19.982
+                            {props.dialogItem && props.dialogItem.popularity}
                         </Typography>
                     </Grid>
                 </Grid>

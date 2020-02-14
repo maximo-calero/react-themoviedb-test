@@ -3,11 +3,12 @@ import { HomeProps } from './HomeProps';
 import { HomeState } from './HomeState';
 import { IDataService } from '../../service/DataServiceInterfaces';
 import { DataService } from '../../service/DataService';
-import { Configuration, SearchResults, TvShow, Movie, Result } from '../../model';
+import { Configuration, SearchResults, TvShow, Movie, Result, Item } from '../../model';
 import SearchContentResults from '../common/SearchContentResults';
 import SearchDefinition from '../common/SearchDefinition';
 import { HomeContainer, StyledPaper } from '../common/styled/CommonComponents';
 import ItemDetailDialog from '../common/ItemDetailDialog';
+import { stringConstants } from '../../common/StringConstants';
 
 class Home extends React.Component<HomeProps, HomeState>  {
     dataService: IDataService;
@@ -36,6 +37,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
 
         this.state = {
             configuration: this.emptyConfiguration,
+            moviesGenres: [],
+            tvShowGenres: [],
             searchResults: this.emptySearchResults,
             searchDefinition: {
                 searchTerm: '',
@@ -43,13 +46,25 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 placeholderText: 'Search Movies in The Movie Database API'
             },
             searchSortValue:'Title',
-            openDialog: false
+            dialogProps: {
+                loading: false,
+                openDialog: false,
+                dialogItem: undefined,
+                keywords: []
+            }
         }
     }
 
     async componentDidMount() {
         const conf: Configuration = await this.dataService.getConfiguration();
-        this.setState({ configuration: conf });
+        const movieGenres: Item[] = await this.dataService.getGenres(stringConstants.apiEntities.movie);
+        const tvShowGenres: Item[] = await this.dataService.getGenres(stringConstants.apiEntities.tv);
+        // const testKeyword: Item[] = await this.dataService.getKeywords('240', stringConstants.apiEntities.movie)
+        this.setState({ 
+            configuration: conf, 
+            moviesGenres: movieGenres, 
+            tvShowGenres: tvShowGenres 
+        });
     }
 
     handleChangeSearchType = (event: any) => {
@@ -171,15 +186,41 @@ class Home extends React.Component<HomeProps, HomeState>  {
 
     handleClickCard = (id: string) => {
         //alert('Click on card with id: ' + id);
-        this.setState(prevState => ({ ...prevState, openDialog: true }));
+        const itemResult: Result = 
+            this.state.searchResults.results.filter(item => item.id === +id)[0];
+        this.setState(prevState => ({ ...prevState, 
+            dialogProps: {
+                ...prevState.dialogProps,
+                loading: true,
+                openDialog: true,
+                dialogItem: itemResult
+            }
+        }));
     }
 
     handleDialogOk = (event: any) => {
-        this.setState(prevState => ({ ...prevState, openDialog: false }));
+        this.setState(prevState => ({ ...prevState, 
+            dialogProps: {
+                ...prevState.dialogProps, 
+                openDialog: false
+            }
+        }));        
     }
 
-    handleEntered = (event: any) => {
-        // alert('Entering into dialog');
+    handleEntered = async (event: any) => {
+        const type: string = this.state.searchDefinition.searchTypeValue === 'Movies'
+                                ? stringConstants.apiEntities.movie
+                                : stringConstants.apiEntities.tv;
+        if (this.state.dialogProps.dialogItem) {
+            const keywords: Item[] = 
+                await this.dataService.getKeywords(this.state.dialogProps.dialogItem.id.toString(), type);
+            this.setState(prevState => ({ ...prevState, 
+                dialogProps: {
+                    ...prevState.dialogProps, 
+                    keywords: keywords
+                }
+            }));
+        }
     }
 
     render() {
@@ -187,6 +228,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
                                 ? this.state.configuration.images.secureBaseUrl
                                 : '';
         const imageUrl: string = secureUrl !== '' ? `${secureUrl}/${this.state.configuration.images.posterSizes.w92}/` : '';
+        const imageUrlW185: string = secureUrl !== '' ? `${secureUrl}/${this.state.configuration.images.posterSizes.w185}/` : '';
         return (
             <HomeContainer>
                 <SearchDefinition searchTerm={this.state.searchDefinition.searchTerm} 
@@ -214,7 +256,10 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 }
 
                 <ItemDetailDialog 
-                    openDialog={this.state.openDialog}
+                    baseImageUrl={imageUrlW185}
+                    openDialog={this.state.dialogProps.openDialog}
+                    dialogItem={this.state.dialogProps.dialogItem && this.state.dialogProps.dialogItem}
+                    keywords={this.state.dialogProps.keywords}
                     onEntered={this.handleEntered}
                     onClickDialogOk={this.handleDialogOk}
                 />

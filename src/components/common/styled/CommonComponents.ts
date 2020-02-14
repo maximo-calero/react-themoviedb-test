@@ -111,12 +111,15 @@ export const StyledPaper = styledmui(Paper) ({
 });
 
 export const SearchDefinitionPaper = styledmui(Paper)({
-    padding: '0px 4px',
+    padding: '15px 10px 5px',
     marginBottom: 10,
     display: 'flex',
     alignItems: 'flex-start',
     width: '100%',
     backgroundColor: '#fff',
+    flexWrap: 'wrap',
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
 });
 
 export const SearchDefinitionIconButton = styledmui(IconButton)({
