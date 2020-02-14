@@ -17,13 +17,14 @@ const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         firstColumn: {
             marginRight: '0.900rem',
+            width: '13rem'
         },
         secondColumn: {
-            width: '35%',
-            margin: '0.700rem'
+            width: '20rem',
+            marginRight: '0.700rem'
         },
         thirdColumn: {
-            width: '35%',
+            width: '20rem',
         },
         chip: {
             margin: '0.200rem',
@@ -51,8 +52,8 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
         <Dialog
             disableBackdropClick
             disableEscapeKeyDown
-            maxWidth="lg"
-            fullWidth={false}
+            maxWidth="md"
+            fullWidth={true}
             onEntered={props.onEntered}
             aria-labelledby="confirmation-dialog-title"
             open={props.openDialog}
@@ -66,64 +67,64 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                     <Grid item className={styles.firstColumn}>
                         <img src={imageUrl} alt={props.dialogItem && props.dialogItem.title} />
                     </Grid>
-                    <Grid item className={styles.secondColumn}>
-                        <Grid container direction='column' >
-                            <Grid item>
-                                <Typography variant="h6" gutterBottom>
-                                    Overview
-                                </Typography>
-                                <Typography variant="body1" gutterBottom>
-                                    {props.dialogItem && props.dialogItem.overview}
-                                </Typography>
-                            </Grid>
-                            <Grid item>
-                                <Typography variant="h6" gutterBottom>
-                                    Popularity
-                                </Typography>
-                                <Typography variant="body1" gutterBottom>
-                                    {props.dialogItem && props.dialogItem.popularity}
-                                </Typography>
-                            </Grid>
+                    {/* <Grid item className={styles.secondColumn}> */}
+                    <Grid container direction='column' className={styles.secondColumn} >
+                        <Grid item>
+                            <Typography variant="h6" gutterBottom>
+                                Overview
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                {props.dialogItem && props.dialogItem.overview}
+                            </Typography>
+                        </Grid>
+                        <Grid item>
+                            <Typography variant="h6" gutterBottom>
+                                Popularity
+                            </Typography>
+                            <Typography variant="body1" gutterBottom>
+                                {props.dialogItem && props.dialogItem.popularity}
+                            </Typography>
                         </Grid>
                     </Grid>
-                    <Grid item className={styles.thirdColumn}>
-                        <Grid container direction='column' >
-                            <Grid item>
-                                <Typography variant="h6" gutterBottom>
-                                    Genres
-                                </Typography>
-                                <div>
-                                    {props.genres.length > 0 &&
-                                        props.genres.map(item => {
-                                            return(
-                                                <Chip className={`${styles.chip} ${styles.genreChip}`} key={item} label={item} />
-                                            )
-                                        })
-                                    }
-                                    {props.genres.length === 0 &&
-                                        <Typography>No genres provided</Typography>
-                                    }                                    
-                                </div>                    
-                            </Grid>                            
-                            <Grid item>
-                                <Typography variant="h6" gutterBottom>
-                                    Keywords
-                                </Typography>
-                                <div>
-                                    {props.keywords.length > 0 &&
-                                        props.keywords.map(item => {
-                                            return(
-                                                <Chip className={`${styles.chip} ${styles.keyWordChip}`} key={item.id} label={item.name} />
-                                            )
-                                        })
-                                    }
-                                    {props.keywords.length === 0 &&
-                                        <Typography>No keywords provided</Typography>
-                                    }
-                                </div>                    
-                            </Grid>
+                    {/* </Grid> */}
+                    {/* <Grid item className={styles.thirdColumn}> */}
+                    <Grid container direction='column' className={styles.thirdColumn}>
+                        <Grid item>
+                            <Typography variant="h6" gutterBottom>
+                                Genres
+                            </Typography>
+                            <div>
+                                {props.genres.length > 0 &&
+                                    props.genres.map(item => {
+                                        return(
+                                            <Chip className={`${styles.chip} ${styles.genreChip}`} key={item} label={item} />
+                                        )
+                                    })
+                                }
+                                {props.genres.length === 0 &&
+                                    <Typography>No genres provided</Typography>
+                                }                                    
+                            </div>                    
+                        </Grid>                            
+                        <Grid item>
+                            <Typography variant="h6" gutterBottom>
+                                Keywords
+                            </Typography>
+                            <div>
+                                {props.keywords.length > 0 &&
+                                    props.keywords.map(item => {
+                                        return(
+                                            <Chip className={`${styles.chip} ${styles.keyWordChip}`} key={item.id} label={item.name} />
+                                        )
+                                    })
+                                }
+                                {props.keywords.length === 0 &&
+                                    <Typography>No keywords provided</Typography>
+                                }
+                            </div>                    
                         </Grid>
-                    </Grid>                    
+                    </Grid>
+                    {/* </Grid>                     */}
                 </Grid>
             </DialogContent>
             <DialogActions>

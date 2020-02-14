@@ -1,16 +1,64 @@
 import React from 'react';
 import SearchIcon from '@material-ui/icons/Search';
-import { SearchDefinitionPaper, 
-         SearchDefinitionIconButton, 
-         SearchInput} from './styled/CommonComponents';
 import { SearchDefinitionProps } from './ControlInterfaces';
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
 
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+const useStyles = makeStyles((theme: Theme) => 
+    createStyles({
+        searchText: {
+            '& label.Mui-focused': {
+              color: 'green',
+            },
+            '& .MuiInput-underline:after': {
+              borderBottomColor: 'green',
+            },
+            '& .MuiOutlinedInput-root': {
+              '& fieldset': {
+                borderColor: 'rgba(0, 0, 0, 0.23)',
+              },
+              '&:hover fieldset': {
+                borderColor: 'blue',
+              },
+              '&.Mui-focused fieldset': {
+                borderColor: 'green',
+              },
+            },
+            marginLeft: 8,
+            marginBottom: 15,
+            width: '25rem'
+        },
+        searchPaper: {
+            padding: '15px 10px 5px',
+            marginBottom: 10,
+            display: 'flex',
+            alignItems: 'flex-start',
+            width: '100%',
+            backgroundColor: '#fff',
+            flexWrap: 'wrap',
+            flexDirection: 'row',
+            justifyContent: 'center',
+        },
+        dropDown: {
+            marginBottom: 15,
+            width: '15rem'
+        },
+        searchIconButton: {
+            padding: 10,
+            width: '4rem',
+            height: '4rem',
+        }
+    })
+);
 const SearchDefinition =(props: SearchDefinitionProps) => {
+    const styles = useStyles();
     return(
-        <SearchDefinitionPaper component="form" >
+        <Paper component="form" className={styles.searchPaper} >
             <TextField
+                className={styles.dropDown}
                 id="outlined-select-currency"
                 select
                 label="Search Type"
@@ -22,22 +70,24 @@ const SearchDefinition =(props: SearchDefinitionProps) => {
                 <MenuItem value={'Movies'}>Movies</MenuItem>
                 <MenuItem value={'TV Shows'}>TV Shows</MenuItem>
             </TextField>            
-            <SearchInput
-                // placeholder={props.placeHolderText}
+            <TextField
+                className={styles.searchText}
                 inputProps={{ 'aria-label': 'search movies' }}
                 onChange={props.onChangeSearchInput}
                 value={props.searchTerm}
                 label={props.placeHolderText}
                 variant="outlined"
             />
-            <SearchDefinitionIconButton 
+            <IconButton 
+                className={styles.searchIconButton}
                 type="submit"  
                 aria-label="search"
                 onClick={props.onClickSearch}
             >
                 <SearchIcon />
-            </SearchDefinitionIconButton>
+            </IconButton>
             <TextField
+                className={styles.dropDown}
                 id="outlined-select-currency"
                 select
                 label="Sort by"
@@ -50,7 +100,7 @@ const SearchDefinition =(props: SearchDefinitionProps) => {
                 <MenuItem value={'Release date'}>Release date</MenuItem>
                 <MenuItem value={'Vote average'}>Vote average (DESC)</MenuItem>
             </TextField>              
-        </SearchDefinitionPaper>
+        </Paper>
     );
 }
 
