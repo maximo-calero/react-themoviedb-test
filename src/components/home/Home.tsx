@@ -50,6 +50,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 loading: false,
                 openDialog: false,
                 dialogItem: undefined,
+                genres: [],
                 keywords: []
             }
         }
@@ -185,15 +186,36 @@ class Home extends React.Component<HomeProps, HomeState>  {
     }
 
     handleClickCard = (id: string) => {
-        //alert('Click on card with id: ' + id);
         const itemResult: Result = 
             this.state.searchResults.results.filter(item => item.id === +id)[0];
+
+        let genres: string[] = [];
+        switch (this.state.searchDefinition.searchTypeValue) {
+            case 'Movies':
+                if (itemResult.genreIds.length > 0) {
+                        genres = itemResult.genreIds.map(genreId => {
+                                return this.state.moviesGenres.filter(item => item.id === genreId)[0].name;
+                        });
+                }
+                break;
+            case 'Tv Shows':
+                if (itemResult.genreIds.length > 0) {
+                        genres = itemResult.genreIds.map(genreId => {
+                            return this.state.tvShowGenres.filter(item => item.id === genreId)[0].name;
+                    });
+                }
+                break;
+            default:
+                break;
+        }
+
         this.setState(prevState => ({ ...prevState, 
             dialogProps: {
                 ...prevState.dialogProps,
                 loading: true,
                 openDialog: true,
-                dialogItem: itemResult
+                dialogItem: itemResult,
+                genres: genres
             }
         }));
     }
@@ -201,8 +223,11 @@ class Home extends React.Component<HomeProps, HomeState>  {
     handleDialogOk = (event: any) => {
         this.setState(prevState => ({ ...prevState, 
             dialogProps: {
-                ...prevState.dialogProps, 
-                openDialog: false
+                loading: false,
+                openDialog: false,
+                dialogItem: undefined,
+                genres: [],
+                keywords: []
             }
         }));        
     }
@@ -216,7 +241,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 await this.dataService.getKeywords(this.state.dialogProps.dialogItem.id.toString(), type);
             this.setState(prevState => ({ ...prevState, 
                 dialogProps: {
-                    ...prevState.dialogProps, 
+                    ...prevState.dialogProps,
+                    loading: false, 
                     keywords: keywords
                 }
             }));
@@ -258,7 +284,9 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 <ItemDetailDialog 
                     baseImageUrl={imageUrlW185}
                     openDialog={this.state.dialogProps.openDialog}
+                    showBackdrop={this.state.dialogProps.loading}
                     dialogItem={this.state.dialogProps.dialogItem && this.state.dialogProps.dialogItem}
+                    genres={this.state.dialogProps.genres}
                     keywords={this.state.dialogProps.keywords}
                     onEntered={this.handleEntered}
                     onClickDialogOk={this.handleDialogOk}

@@ -43,14 +43,22 @@ export class DataService implements IDataService {
     }
 
     public async getKeywords(id: string, type:string): Promise<Item[]> {
-        const obj: any = await this.getApiJson(`${type}${id}${stringConstants.apiEntities.keywords}`)
-        if (obj.keywords.length > 0) {
+        const obj: any = await this.getApiJson(`${type}${id}${stringConstants.apiEntities.keywords}`);
+        
+        if (obj.keywords && obj.keywords.length > 0) {
             return (obj.keywords as any[]).map(item => {
                 return {
                     id: item.id,
                     name: item.name
                 };
-            })
+            });
+        }else if (obj.results && obj.results.length){
+            return (obj.results as any[]).map(item => {
+                return {
+                    id: item.id,
+                    name: item.name
+                };
+            });
         }else {
             return []
         }

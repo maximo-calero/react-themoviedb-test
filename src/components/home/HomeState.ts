@@ -20,5 +20,6 @@ interface DialogProperties {
     loading: boolean;
     openDialog: boolean;
     dialogItem: Result | undefined;
+    genres: string[];
     keywords: Item[];
 }

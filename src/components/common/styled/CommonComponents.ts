@@ -12,6 +12,7 @@ import Typography from '@material-ui/core/Typography';
 import RateReviewTwoTone from '@material-ui/icons/RateReviewTwoTone';
 import EventTwoTone from '@material-ui/icons/EventTwoTone';
 import TextField from '@material-ui/core/TextField';
+import Grid from '@material-ui/core/Grid';
 
 export const AppContainer = styledmui(Container)({
 
@@ -149,8 +150,6 @@ export const SearchInput = styledmui(TextField)({
       marginLeft: 8,
       flex: 1,      
 });
-
-
 
 export const SearchResults = styledmui(InfiniteScroll)({
     display: 'flex',

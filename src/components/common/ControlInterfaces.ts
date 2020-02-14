@@ -35,7 +35,9 @@ export interface SearchDefinitionProps {
 export interface ItemDetailDialogProps {
     baseImageUrl: string;
     openDialog: boolean;
+    showBackdrop: boolean;
     dialogItem: Result | undefined;
+    genres: string[];
     keywords: Item[];
     onEntered: (event: any) => void;
     onClickDialogOk: (event: any) => void;
