@@ -4,9 +4,6 @@ import { SearchMovieResultsContainer, SearchResults, SearchResultItem } from './
 import MediaCard from './MediaCard';
 
 class SearchContentResults extends React.Component<SearchContentResultsProps> {
-    constructor(props: SearchContentResultsProps) {
-        super(props);
-    }
     handleClickCard = (id: string) => {
         this.props.onClickCard(id)
     }

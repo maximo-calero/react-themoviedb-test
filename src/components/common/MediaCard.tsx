@@ -14,9 +14,6 @@ import { StyledCard,
 import defaultImage from '../../images/default-image_300.png';
 
 class MediaCard extends React.Component<MediaCardProps> {
-  constructor(props: MediaCardProps) {
-    super(props)
-  }
 
   handleClickCard = (event: any) => {
     this.props.onClickCard(event.currentTarget.id)
