@@ -12,7 +12,8 @@ export const stringConstants = {
         'searchMovie': '/search/movie',
         'searchTvShow': '/search/tv',
         'rating': '/rating',
-        'ratedMovies': '/rated/movies'
+        'ratedMovies': '/rated/movies',
+        'accountStates': '/account_states'
     },
     'params': {
         'apiKey': '?api_key=',

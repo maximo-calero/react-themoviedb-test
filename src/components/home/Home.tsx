@@ -3,7 +3,7 @@ import { HomeProps } from './HomeProps';
 import { HomeState } from './HomeState';
 import { IDataService } from '../../service/DataServiceInterfaces';
 import { DataService } from '../../service/DataService';
-import { Configuration, SearchResults, TvShow, Movie, Result, Item } from '../../model';
+import { Configuration, SearchResults, TvShow, Movie, Result, Item, RatedMovie } from '../../model';
 import SearchContentResults from '../common/SearchContentResults';
 import SearchDefinition from '../common/SearchDefinition';
 import { HomeContainer, StyledPaper } from '../common/styled/CommonComponents';
@@ -52,6 +52,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 dialogItem: undefined,
                 genres: [],
                 keywords: [],
+                rating: 0,
                 ratingMessage: ''
             }
         }
@@ -225,6 +226,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
             dialogProps: {
                 ...prevState.dialogProps,
                 openDialog: false,
+                rating: 0,
+                ratingMessage: ''
             }
         }));        
     }
@@ -236,11 +239,15 @@ class Home extends React.Component<HomeProps, HomeState>  {
         if (this.state.dialogProps.dialogItem) {
             const keywords: Item[] = 
                 await this.dataService.getKeywords(this.state.dialogProps.dialogItem.id.toString(), type);
+            let ratedMovie: RatedMovie | undefined = undefined;
+            if (this.state.searchDefinition.searchTypeValue === 'Movies')
+                ratedMovie = await this.dataService.getRatedMovie(this.state.dialogProps.dialogItem.id.toString());
             this.setState(prevState => ({ ...prevState, 
                 dialogProps: {
                     ...prevState.dialogProps,
                     loading: false, 
-                    keywords: keywords
+                    keywords: keywords,
+                    rating: ratedMovie && ratedMovie.ratedValue ? ratedMovie.ratedValue : 0
                 }
             }));
         }
@@ -262,6 +269,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 this.setState(prevState => ({ ...prevState, 
                     dialogProps: {
                         ...prevState.dialogProps,
+                        rating: newValue,
                         ratingMessage: message
                     }
                 }));
@@ -310,10 +318,9 @@ class Home extends React.Component<HomeProps, HomeState>  {
                     onEntered={this.handleEntered}
                     onClickDialogOk={this.handleDialogOk}
                     onChangeRating={this.handleRating}
-                    ratingValue={this.state.dialogProps.dialogItem 
-                                    ? this.state.dialogProps.dialogItem.rating 
-                                    : 0}
+                    ratingValue={this.state.dialogProps.rating}
                     ratingMessage={this.state.dialogProps.ratingMessage}
+                    type={this.state.searchDefinition.searchTypeValue}
                 />
             </HomeContainer>
         )

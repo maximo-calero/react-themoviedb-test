@@ -137,17 +137,34 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                 </Grid>
             </DialogContent>
             <DialogActions className={styles.dialogActions}>
-                <Box component="fieldset" mb={3} borderColor="transparent">
-                    <Typography component="legend">Rating</Typography>
-                    <Rating
-                        name="simple-controlled"
-                        value={props.ratingValue}
-                        max={10}
-                        precision={0.25}
-                        onChange={props.onChangeRating}
-                    />
-                    <Typography component="span">{props.ratingMessage && props.ratingMessage}</Typography>
-                </Box>                
+                <Grid container direction='column'>
+                    <Grid item>
+                        <Box component="fieldset" mb={3} borderColor="transparent">
+                            <Typography component="legend">Vote average</Typography>
+                            <Rating
+                                name="vote-average"
+                                value={props.dialogItem && props.dialogItem.voteAverage}
+                                max={10}
+                                precision={0.25}
+                            />
+                        </Box>
+                    </Grid>
+                    {props.type === 'Movies' &&
+                        <Grid item>
+                            <Box component="fieldset" mb={3} borderColor="transparent">
+                                <Typography component="legend">Your rating</Typography>
+                                <Rating
+                                    name="your-rating"
+                                    value={props.ratingValue}
+                                    max={10}
+                                    precision={0.25}
+                                    onChange={props.onChangeRating}
+                                />
+                                <Typography component="span">{props.ratingMessage && props.ratingMessage}</Typography>
+                            </Box>
+                        </Grid>
+                    }
+                </Grid>
                 <Button onClick={props.onClickDialogOk} color="primary">
                 Ok
                 </Button>

@@ -11,5 +11,4 @@ export interface Result {
     posterPath: string;
     backdropPath: string;
     originalLanguage: string;
-    rating: number;
 }

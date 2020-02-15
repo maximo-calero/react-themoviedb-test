@@ -37,6 +37,7 @@ export interface ItemDetailDialogProps {
     baseImageUrl: string;
     openDialog: boolean;
     showBackdrop: boolean;
+    type: string;
     dialogItem: Result | undefined;
     genres: string[];
     keywords: Item[];

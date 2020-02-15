@@ -4,3 +4,4 @@ export * from './Movie';
 export * from './TvShow';
 export * from './Result';
 export * from './Item';
+export * from './RatedMovie';

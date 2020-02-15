@@ -1,5 +1,5 @@
 import { IDataService } from "./DataServiceInterfaces";
-import { Configuration, SearchResults, Movie, TvShow, Item, Result } from "../model";
+import { Configuration, SearchResults, Movie, TvShow, Item, Result, RatedMovie } from "../model";
 import { stringConstants } from "../common/StringConstants";
 import { stringToEnum, stringToDate } from "../common/FunctionsHelper";
 
@@ -83,101 +83,64 @@ export class DataService implements IDataService {
         return configuration;
     }
 
-    public async getMoviesRated(): Promise<Result[]> {
-        let page: number = 0;
-        const totalPages: number = 0;
-        const arrayResult: any[] = [];
 
-        while (totalPages >= page) {
-            if (totalPages < page)
-                page ++;
-            else
-                page = totalPages
-
-            const obj = await this.getAllMoviesRated(page.toString());
-            if (obj.total_results > 0) {
-                (obj.results as any[]).forEach(item => {
-                    arrayResult.push(item);
-                });
-            }
-        }
-
-        if (arrayResult.length > 0) {
-            const movies: Movie[] = arrayResult.map(item => {
-                return {
-                    id: item.id,
-                    title: item.title,
-                    overview: item.overview,
-                    shortDescription: item.overview 
-                                        ? (item.overview as string).length > 60
-                                            ? `${(item.overview as string).substr(0, 60)}...`
-                                            : (item.overview as string)
-                                        : '',
-                    popularity: item.popularity,
-                    video: item.video,
-                    voteCount: item.vote_count,
-                    voteAverage: item.vote_average,
-                    releaseDate: item.release_date && stringToDate(item.release_date),
-                    originalLanguage: item.original_language,
-                    originalTitle: item.original_title,
-                    genreIds: item.genre_ids,
-                    backdropPath: item.backdrop_path,
-                    adult: item.adult,
-                    posterPath: item.poster_path,
-                    rating: 0
-                };
-            });
-            return movies;
-        }else {
-            return [];
-        }
+    private getMoviesFromServiceArray(serviceArray: any[]): Movie[]{
+        return serviceArray.map(item => {
+            return {
+                id: item.id,
+                title: item.title,
+                overview: item.overview,
+                shortDescription: item.overview 
+                                    ? (item.overview as string).length > 60
+                                        ? `${(item.overview as string).substr(0, 60)}...`
+                                        : (item.overview as string)
+                                    : '',
+                popularity: item.popularity,
+                video: item.video,
+                voteCount: item.vote_count,
+                voteAverage: item.vote_average,
+                releaseDate: item.release_date && stringToDate(item.release_date),
+                originalLanguage: item.original_language,
+                originalTitle: item.original_title,
+                genreIds: item.genre_ids,
+                backdropPath: item.backdrop_path,
+                adult: item.adult,
+                posterPath: item.poster_path,
+            };
+        });
     }
 
-    private async getAllMoviesRated(page: string): Promise<any> {
-        const url: string = 
-                `${this.apiUrl}
-                ${stringConstants.apiEntities.account}
-                ${stringConstants.verbs.ratedMovies}
-                ${stringConstants.params.apiKey}${this.apiKey}
-                ${stringConstants.params.sessionId}${this.sessionId}
-                ${stringConstants.params.page}${page}`;
-        const response: Response = await fetch(url);
-        if (!response.ok) {
-            throw new Error(response.statusText);
-        }
-        return await response.json();
-    }
+    private getTvShowsFromServiceArray(serviceArray: any[]): TvShow[]{
+        return serviceArray.map(item => {
+            return {
+                id: item.id,
+                title: item.name,
+                overview: item.overview,
+                shortDescription: item.overview 
+                                    ? (item.overview as string).length > 60
+                                        ? `${(item.overview as string).substr(0, 60)}...`
+                                        : (item.overview as string)
+                                    : '',
+                popularity: item.popularity,
+                voteCount: item.vote_count,
+                voteAverage: item.vote_average,
+                releaseDate: item.first_air_date && stringToDate(item.first_air_date),
+                originalName: item.original_name,
+                originCountry: item.origin_country,
+                originalLanguage: item.original_language,
+                genreIds: item.genre_ids,
+                backdropPath: item.backdrop_path,
+                posterPath: item.poster_path,
+            };
+        });
+    }    
 
     public async searchMovies(searchTerm: string, page: number): Promise<SearchResults> {
         const query: string= `${stringConstants.params.query}${searchTerm}${stringConstants.params.page}${page.toString()}`;
         const obj: any = await this.getApiJson(stringConstants.verbs.searchMovie, query);
 
         if (obj.total_results > 0) {
-            const movies: Movie[] = (obj.results as any[]).map(item => {
-                return {
-                    id: item.id,
-                    title: item.title,
-                    overview: item.overview,
-                    shortDescription: item.overview 
-                                        ? (item.overview as string).length > 60
-                                            ? `${(item.overview as string).substr(0, 60)}...`
-                                            : (item.overview as string)
-                                        : '',
-                    popularity: item.popularity,
-                    video: item.video,
-                    voteCount: item.vote_count,
-                    voteAverage: item.vote_average,
-                    releaseDate: item.release_date && stringToDate(item.release_date),
-                    originalLanguage: item.original_language,
-                    originalTitle: item.original_title,
-                    genreIds: item.genre_ids,
-                    backdropPath: item.backdrop_path,
-                    adult: item.adult,
-                    posterPath: item.poster_path,
-                    rating: 0
-                };
-            });
-
+            const movies: Movie[] = this.getMoviesFromServiceArray(obj.results as any[]);
             return {
                 page: obj.page,
                 totalResults: obj.total_results,
@@ -199,30 +162,7 @@ export class DataService implements IDataService {
         const obj: any = await this.getApiJson(stringConstants.verbs.searchTvShow, query);
 
         if (obj.total_results > 0) {
-            const tvShows: TvShow[] = (obj.results as any[]).map(item => {
-                return {
-                    id: item.id,
-                    title: item.name,
-                    overview: item.overview,
-                    shortDescription: item.overview 
-                                        ? (item.overview as string).length > 60
-                                            ? `${(item.overview as string).substr(0, 60)}...`
-                                            : (item.overview as string)
-                                        : '',
-                    popularity: item.popularity,
-                    voteCount: item.vote_count,
-                    voteAverage: item.vote_average,
-                    releaseDate: item.first_air_date && stringToDate(item.first_air_date),
-                    originalName: item.original_name,
-                    originCountry: item.origin_country,
-                    originalLanguage: item.original_language,
-                    genreIds: item.genre_ids,
-                    backdropPath: item.backdrop_path,
-                    posterPath: item.poster_path,
-                    rating: 0
-                };
-            });
-
+            const tvShows: TvShow[] = this.getTvShowsFromServiceArray(obj.results as any[]);
             return {
                 page: obj.page,
                 totalResults: obj.total_results,
@@ -236,6 +176,23 @@ export class DataService implements IDataService {
                 totalPages: obj.total_pages,
                 results: []
             };
+        }
+    }
+
+    public async getRatedMovie(id: string): Promise<RatedMovie | undefined> {
+        // const url: string= `${this.apiUrl}${stringConstants.apiEntities.movie}${id}${stringConstants.verbs.accountStates}${stringConstants.params.apiKey}${this.apiKey}${stringConstants.params.sessionId}${this.sessionId}`;
+        const urlPart: string = `${stringConstants.apiEntities.movie}${id}${stringConstants.verbs.accountStates}`;
+        const params: string = `${stringConstants.params.sessionId}${this.sessionId}`;
+        const obj = await this.getApiJson(urlPart, params);
+        if(obj) {
+            return {
+                id: obj.id,
+                favorite: obj.favorite,
+                ratedValue: obj.rated.value,
+                watchList: obj.watchlist
+            }
+        }else {
+            return undefined;
         }
     }
 
