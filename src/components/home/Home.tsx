@@ -43,7 +43,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
             searchDefinition: {
                 searchTerm: '',
                 searchTypeValue: 'Movies',
-                placeholderText: 'Search Movies in The Movie Database API'
+                placeholderText: 'Search Movies'
             },
             searchSortValue:'Title',
             dialogProps: {
@@ -69,7 +69,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
 
     handleChangeSearchType = (event: any) => {
         const { value } = event.target;
-        const newPlaceHolder = `Search ${value} in The Movie Database API` ;
+        const newPlaceHolder = `Search ${value}` ;
         this.setState(prevState => ({ 
                     ...prevState, 
                         searchDefinition: { 
