@@ -1,5 +1,6 @@
 import { Result } from "../../model/Result";
 import { Item } from "../../model";
+import { ChangeEvent } from "react";
 
 export interface MediaCardProps {
     id: number;
@@ -39,6 +40,9 @@ export interface ItemDetailDialogProps {
     dialogItem: Result | undefined;
     genres: string[];
     keywords: Item[];
+    ratingValue: number;
+    ratingMessage: string;
     onEntered: (event: any) => void;
     onClickDialogOk: (event: any) => void;
+    onChangeRating: (event: ChangeEvent<{}>, newValue: number | null) => void;
 }

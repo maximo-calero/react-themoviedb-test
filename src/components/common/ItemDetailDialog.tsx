@@ -11,6 +11,8 @@ import defaultImage from '../../images/default-image_300.png';
 import Chip from '@material-ui/core/Chip';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from "@material-ui/core/Box";
+import Rating from "@material-ui/lab/Rating";
 import { useTheme, createStyles, 
     makeStyles, 
     Theme } from '@material-ui/core/styles';
@@ -43,7 +45,10 @@ const useItemDialogStyles = makeStyles((theme: Theme) =>
         backdrop: {
             zIndex: theme.zIndex.drawer + 1,
             color: '#fff',
-        },        
+        },
+        dialogActions: {
+            justifyContent: 'space-between'
+        }   
     })
 );
 
@@ -131,7 +136,18 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                     </Grid>
                 </Grid>
             </DialogContent>
-            <DialogActions>
+            <DialogActions className={styles.dialogActions}>
+                <Box component="fieldset" mb={3} borderColor="transparent">
+                    <Typography component="legend">Rating</Typography>
+                    <Rating
+                        name="simple-controlled"
+                        value={props.ratingValue}
+                        max={10}
+                        precision={0.25}
+                        onChange={props.onChangeRating}
+                    />
+                    <Typography component="span">{props.ratingMessage && props.ratingMessage}</Typography>
+                </Box>                
                 <Button onClick={props.onClickDialogOk} color="primary">
                 Ok
                 </Button>

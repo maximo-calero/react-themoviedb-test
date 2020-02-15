@@ -1,5 +1,9 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+Important to take into account:
+Get Session Id:
+https://developers.themoviedb.org/3/authentication/how-do-i-generate-a-session-id
+
 ## Available Scripts
 
 In the project directory, you can run:

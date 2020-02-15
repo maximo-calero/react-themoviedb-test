@@ -7,11 +7,13 @@ import { stringToEnum, stringToDate } from "../common/FunctionsHelper";
 export class DataService implements IDataService {
     private apiUrl: string;
     private apiKey: string;
+    private sessionId: string;
 
     constructor() {
-        if (process.env.API_URL && process.env.API_KEY) {
-            this.apiUrl = process.env.API_URL
-            this.apiKey = process.env.API_KEY
+        if (process.env.API_URL && process.env.API_KEY && process.env.SESSION_ID) {
+            this.apiUrl = process.env.API_URL;
+            this.apiKey = process.env.API_KEY;
+            this.sessionId = process.env.SESSION_ID;
         }else {
             throw new Error('API Url is not configured');
         }
@@ -23,7 +25,7 @@ export class DataService implements IDataService {
                     : `${this.apiUrl}${entity}${stringConstants.params.apiKey}${this.apiKey}`;
         const response: Response = await fetch(url);
         if (!response.ok) {
-            throw new Error(response.statusText)
+            throw new Error(response.statusText);
         }
         return await response.json();
     }
@@ -83,7 +85,7 @@ export class DataService implements IDataService {
 
     public async searchMovies(searchTerm: string, page: number): Promise<SearchResults> {
         const query: string= `${stringConstants.params.query}${searchTerm}${stringConstants.params.page}${page.toString()}`;
-        const obj: any = await this.getApiJson(stringConstants.apiEntities.searchMovie, query);
+        const obj: any = await this.getApiJson(stringConstants.verbs.searchMovie, query);
 
         if (obj.total_results > 0) {
             const movies: Movie[] = (obj.results as any[]).map(item => {
@@ -106,7 +108,8 @@ export class DataService implements IDataService {
                     genreIds: item.genre_ids,
                     backdropPath: item.backdrop_path,
                     adult: item.adult,
-                    posterPath: item.poster_path
+                    posterPath: item.poster_path,
+                    rating: 0
                 };
             });
 
@@ -128,7 +131,7 @@ export class DataService implements IDataService {
 
     public async searchTvShows(searchTerm: string, page: number): Promise<SearchResults> {
         const query: string= `${stringConstants.params.query}${searchTerm}${stringConstants.params.page}${page.toString()}`;
-        const obj: any = await this.getApiJson(stringConstants.apiEntities.searchTvShow, query);
+        const obj: any = await this.getApiJson(stringConstants.verbs.searchTvShow, query);
 
         if (obj.total_results > 0) {
             const tvShows: TvShow[] = (obj.results as any[]).map(item => {
@@ -150,7 +153,8 @@ export class DataService implements IDataService {
                     originalLanguage: item.original_language,
                     genreIds: item.genre_ids,
                     backdropPath: item.backdrop_path,
-                    posterPath: item.poster_path
+                    posterPath: item.poster_path,
+                    rating: 0
                 };
             });
 
@@ -168,5 +172,24 @@ export class DataService implements IDataService {
                 results: []
             };
         }
-    }    
+    }
+
+    public async rateMovie(id: string, rateValue: number): Promise<any> {
+        const objValue = {
+            value: rateValue
+        };
+        const postUrl: string = 
+            `${this.apiUrl}${stringConstants.apiEntities.movie}${id}${stringConstants.verbs.rating}${stringConstants.params.apiKey}${this.apiKey}${stringConstants.params.sessionId}${this.sessionId}`;
+    
+        const response: Response = await fetch(postUrl, {
+            method: 'POST',
+            headers: { 'content-type': 'application/json;charset=utf-8' },
+            body: JSON.stringify(objValue)
+        });
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+
+        return await response.json();
+    }
 }

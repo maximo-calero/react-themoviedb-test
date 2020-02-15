@@ -78,7 +78,8 @@ function getClientEnvironment(publicUrl) {
         // images into the `src` and `import` them in code to get their paths.
         PUBLIC_URL: publicUrl,
         API_URL: 'https://api.themoviedb.org/3',
-        API_KEY: '8e04168f7bad30462aace99b52adbfd3'
+        API_KEY: '8e04168f7bad30462aace99b52adbfd3',
+        SESSION_ID: '64358d5d1f227ebcc0d5f39df8a138d99771e291'
       }
     );
   // Stringify all values so we can feed into Webpack DefinePlugin

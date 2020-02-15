@@ -51,7 +51,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 openDialog: false,
                 dialogItem: undefined,
                 genres: [],
-                keywords: []
+                keywords: [],
+                ratingMessage: ''
             }
         }
     }
@@ -245,6 +246,29 @@ class Home extends React.Component<HomeProps, HomeState>  {
         }
     }
 
+    handleRating = async(event: React.ChangeEvent<{}>, newValue: number | null) => {
+        //alert('New rating: ' + newValue);
+        if (this.state.dialogProps.dialogItem && newValue) {
+            const response = 
+                await this.dataService.rateMovie(this.state.dialogProps.dialogItem.id.toString(), newValue);
+            let message: string = '';
+
+            if (response.status_code === 1) {
+                message = 'Rating done successfully!!';
+            }
+            if (response.status_code === 12) {
+                message = 'Rating updated successfully!!';
+            }
+            if (message)
+                this.setState(prevState => ({ ...prevState, 
+                    dialogProps: {
+                        ...prevState.dialogProps,
+                        ratingMessage: message
+                    }
+                }));
+        }
+    }
+
     render() {
         const secureUrl: string = this.state.configuration.images.secureBaseUrl !== ''
                                 ? this.state.configuration.images.secureBaseUrl
@@ -286,6 +310,11 @@ class Home extends React.Component<HomeProps, HomeState>  {
                     keywords={this.state.dialogProps.keywords}
                     onEntered={this.handleEntered}
                     onClickDialogOk={this.handleDialogOk}
+                    onChangeRating={this.handleRating}
+                    ratingValue={this.state.dialogProps.dialogItem 
+                                    ? this.state.dialogProps.dialogItem.rating 
+                                    : 0}
+                    ratingMessage={this.state.dialogProps.ratingMessage}
                 />
             </HomeContainer>
         )
