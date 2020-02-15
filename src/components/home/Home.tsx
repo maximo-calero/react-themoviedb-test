@@ -3,7 +3,7 @@ import { HomeProps } from './HomeProps';
 import { HomeState } from './HomeState';
 import { IDataService } from '../../service/DataServiceInterfaces';
 import { DataService } from '../../service/DataService';
-import { Configuration, SearchResults, TvShow, Movie, Result, Item } from '../../model';
+import { Configuration, SearchResults, TvShow, Movie, Result, Item, RatedMovie } from '../../model';
 import SearchContentResults from '../common/SearchContentResults';
 import SearchDefinition from '../common/SearchDefinition';
 import { HomeContainer, StyledPaper } from '../common/styled/CommonComponents';
@@ -51,7 +51,9 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 openDialog: false,
                 dialogItem: undefined,
                 genres: [],
-                keywords: []
+                keywords: [],
+                rating: 0,
+                ratingMessage: ''
             }
         }
     }
@@ -224,6 +226,8 @@ class Home extends React.Component<HomeProps, HomeState>  {
             dialogProps: {
                 ...prevState.dialogProps,
                 openDialog: false,
+                rating: 0,
+                ratingMessage: ''
             }
         }));        
     }
@@ -235,13 +239,40 @@ class Home extends React.Component<HomeProps, HomeState>  {
         if (this.state.dialogProps.dialogItem) {
             const keywords: Item[] = 
                 await this.dataService.getKeywords(this.state.dialogProps.dialogItem.id.toString(), type);
+            let ratedMovie: RatedMovie | undefined = undefined;
+            if (this.state.searchDefinition.searchTypeValue === 'Movies')
+                ratedMovie = await this.dataService.getRatedMovie(this.state.dialogProps.dialogItem.id.toString());
             this.setState(prevState => ({ ...prevState, 
                 dialogProps: {
                     ...prevState.dialogProps,
                     loading: false, 
-                    keywords: keywords
+                    keywords: keywords,
+                    rating: ratedMovie && ratedMovie.ratedValue ? ratedMovie.ratedValue : 0
                 }
             }));
+        }
+    }
+
+    handleRating = async(event: React.ChangeEvent<{}>, newValue: number | null) => {
+        if (this.state.dialogProps.dialogItem && newValue) {
+            const response = 
+                await this.dataService.rateMovie(this.state.dialogProps.dialogItem.id.toString(), newValue);
+            let message: string = '';
+
+            if (response.status_code === 1) {
+                message = 'Rating done successfully!!';
+            }
+            if (response.status_code === 12) {
+                message = 'Rating updated successfully!!';
+            }
+            if (message)
+                this.setState(prevState => ({ ...prevState, 
+                    dialogProps: {
+                        ...prevState.dialogProps,
+                        rating: newValue,
+                        ratingMessage: message
+                    }
+                }));
         }
     }
 
@@ -286,6 +317,10 @@ class Home extends React.Component<HomeProps, HomeState>  {
                     keywords={this.state.dialogProps.keywords}
                     onEntered={this.handleEntered}
                     onClickDialogOk={this.handleDialogOk}
+                    onChangeRating={this.handleRating}
+                    ratingValue={this.state.dialogProps.rating}
+                    ratingMessage={this.state.dialogProps.ratingMessage}
+                    type={this.state.searchDefinition.searchTypeValue}
                 />
             </HomeContainer>
         )

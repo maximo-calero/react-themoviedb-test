@@ -22,4 +22,6 @@ interface DialogProperties {
     dialogItem: Result | undefined;
     genres: string[];
     keywords: Item[];
+    rating: number;
+    ratingMessage: string;
 }
