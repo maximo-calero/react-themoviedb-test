@@ -1,5 +1,5 @@
 import { IDataService } from "./DataServiceInterfaces";
-import { Configuration, SearchResults, Movie, TvShow, Item } from "../model";
+import { Configuration, SearchResults, Movie, TvShow, Item, Result } from "../model";
 import { stringConstants } from "../common/StringConstants";
 import { stringToEnum, stringToDate } from "../common/FunctionsHelper";
 
@@ -81,6 +81,71 @@ export class DataService implements IDataService {
             changeKeys: stringToEnum(obj.change_keys)
         };
         return configuration;
+    }
+
+    public async getMoviesRated(): Promise<Result[]> {
+        let page: number = 0;
+        const totalPages: number = 0;
+        const arrayResult: any[] = [];
+
+        while (totalPages >= page) {
+            if (totalPages < page)
+                page ++;
+            else
+                page = totalPages
+
+            const obj = await this.getAllMoviesRated(page.toString());
+            if (obj.total_results > 0) {
+                (obj.results as any[]).forEach(item => {
+                    arrayResult.push(item);
+                });
+            }
+        }
+
+        if (arrayResult.length > 0) {
+            const movies: Movie[] = arrayResult.map(item => {
+                return {
+                    id: item.id,
+                    title: item.title,
+                    overview: item.overview,
+                    shortDescription: item.overview 
+                                        ? (item.overview as string).length > 60
+                                            ? `${(item.overview as string).substr(0, 60)}...`
+                                            : (item.overview as string)
+                                        : '',
+                    popularity: item.popularity,
+                    video: item.video,
+                    voteCount: item.vote_count,
+                    voteAverage: item.vote_average,
+                    releaseDate: item.release_date && stringToDate(item.release_date),
+                    originalLanguage: item.original_language,
+                    originalTitle: item.original_title,
+                    genreIds: item.genre_ids,
+                    backdropPath: item.backdrop_path,
+                    adult: item.adult,
+                    posterPath: item.poster_path,
+                    rating: 0
+                };
+            });
+            return movies;
+        }else {
+            return [];
+        }
+    }
+
+    private async getAllMoviesRated(page: string): Promise<any> {
+        const url: string = 
+                `${this.apiUrl}
+                ${stringConstants.apiEntities.account}
+                ${stringConstants.verbs.ratedMovies}
+                ${stringConstants.params.apiKey}${this.apiKey}
+                ${stringConstants.params.sessionId}${this.sessionId}
+                ${stringConstants.params.page}${page}`;
+        const response: Response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+        return await response.json();
     }
 
     public async searchMovies(searchTerm: string, page: number): Promise<SearchResults> {

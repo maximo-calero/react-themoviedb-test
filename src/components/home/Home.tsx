@@ -247,7 +247,6 @@ class Home extends React.Component<HomeProps, HomeState>  {
     }
 
     handleRating = async(event: React.ChangeEvent<{}>, newValue: number | null) => {
-        //alert('New rating: ' + newValue);
         if (this.state.dialogProps.dialogItem && newValue) {
             const response = 
                 await this.dataService.rateMovie(this.state.dialogProps.dialogItem.id.toString(), newValue);

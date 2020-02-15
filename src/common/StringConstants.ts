@@ -2,6 +2,7 @@ export const stringConstants = {
     'empty': '',
     'apiEntities': {
         'configuration': '/configuration',
+        'account': '/account/%7Baccount_id%7D',
         'genre': '/genre',
         'movie': '/movie/',
         'tv': '/tv/',
@@ -10,7 +11,8 @@ export const stringConstants = {
     'verbs': {
         'searchMovie': '/search/movie',
         'searchTvShow': '/search/tv',
-        'rating': '/rating'
+        'rating': '/rating',
+        'ratedMovies': '/rated/movies'
     },
     'params': {
         'apiKey': '?api_key=',
