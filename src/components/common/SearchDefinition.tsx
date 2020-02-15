@@ -5,28 +5,30 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
+import { createStyles, 
+    makeStyles, 
+    Theme } from '@material-ui/core/styles';
 
-const useStyles = makeStyles((theme: Theme) => 
+export const useSearchDefinitionStyles = makeStyles((theme: Theme) => 
     createStyles({
         searchText: {
             '& label.Mui-focused': {
-              color: 'green',
+            color: 'green',
             },
             '& .MuiInput-underline:after': {
-              borderBottomColor: 'green',
+            borderBottomColor: 'green',
             },
             '& .MuiOutlinedInput-root': {
-              '& fieldset': {
+            '& fieldset': {
                 borderColor: 'rgba(0, 0, 0, 0.23)',
-              },
-              '&:hover fieldset': {
+            },
+            '&:hover fieldset': {
                 borderColor: 'blue',
-              },
-              '&.Mui-focused fieldset': {
+            },
+            '&.Mui-focused fieldset': {
                 borderColor: 'green',
-              },
+            },
             },
             marginLeft: 8,
             marginBottom: 15,
@@ -57,8 +59,9 @@ const useStyles = makeStyles((theme: Theme) =>
         }
     })
 );
+
 const SearchDefinition =(props: SearchDefinitionProps) => {
-    const styles = useStyles();
+    const styles = useSearchDefinitionStyles();
     return(
         <Paper component="form" className={styles.searchPaper} >
             <TextField

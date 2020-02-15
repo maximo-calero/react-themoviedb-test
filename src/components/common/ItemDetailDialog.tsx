@@ -9,12 +9,15 @@ import Typography from '@material-ui/core/Typography';
 import { ItemDetailDialogProps } from './ControlInterfaces';
 import defaultImage from '../../images/default-image_300.png';
 import Chip from '@material-ui/core/Chip';
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
-import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { useTheme, createStyles, 
+    makeStyles, 
+    Theme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery';
 
-const useStyles = makeStyles((theme: Theme) => 
+
+const useItemDialogStyles = makeStyles((theme: Theme) => 
     createStyles({
         firstColumn: {
             marginRight: '0.900rem',
@@ -44,11 +47,12 @@ const useStyles = makeStyles((theme: Theme) =>
     })
 );
 
+
 const ItemDetailDialog = (props: ItemDetailDialogProps) => {
     const imageUrl = props.dialogItem && props.dialogItem.posterPath 
                         ? `${props.baseImageUrl}${props.dialogItem?.posterPath}`
                         : defaultImage;
-    const styles = useStyles();
+    const styles = useItemDialogStyles();
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -71,7 +75,6 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                     <Grid item className={styles.firstColumn}>
                         <img src={imageUrl} alt={props.dialogItem && props.dialogItem.title} />
                     </Grid>
-                    {/* <Grid item className={styles.secondColumn}> */}
                     <Grid container direction='column' className={styles.secondColumn} >
                         <Grid item>
                             <Typography variant="h6" gutterBottom>
@@ -90,8 +93,6 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                             </Typography>
                         </Grid>
                     </Grid>
-                    {/* </Grid> */}
-                    {/* <Grid item className={styles.thirdColumn}> */}
                     <Grid container direction='column' className={styles.thirdColumn}>
                         <Grid item>
                             <Typography variant="h6" gutterBottom>
@@ -128,7 +129,6 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                             </div>                    
                         </Grid>
                     </Grid>
-                    {/* </Grid>                     */}
                 </Grid>
             </DialogContent>
             <DialogActions>
