@@ -9,7 +9,8 @@ import Typography from '@material-ui/core/Typography';
 import { ItemDetailDialogProps } from './ControlInterfaces';
 import defaultImage from '../../images/default-image_300.png';
 import Chip from '@material-ui/core/Chip';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Backdrop from '@material-ui/core/Backdrop';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
@@ -48,12 +49,15 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                         ? `${props.baseImageUrl}${props.dialogItem?.posterPath}`
                         : defaultImage;
     const styles = useStyles();
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
     return (
         <Dialog
             disableBackdropClick
             disableEscapeKeyDown
             maxWidth="md"
-            fullWidth={true}
+            fullWidth={fullScreen}
             onEntered={props.onEntered}
             aria-labelledby="confirmation-dialog-title"
             open={props.openDialog}

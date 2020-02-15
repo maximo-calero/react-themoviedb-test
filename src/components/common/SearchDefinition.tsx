@@ -5,8 +5,9 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
-
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+
 const useStyles = makeStyles((theme: Theme) => 
     createStyles({
         searchText: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
             },
             marginLeft: 8,
             marginBottom: 15,
-            width: '25rem'
+            width: '15rem'
         },
         searchPaper: {
             padding: '15px 10px 5px',
@@ -50,6 +51,9 @@ const useStyles = makeStyles((theme: Theme) =>
             padding: 10,
             width: '4rem',
             height: '4rem',
+        },
+        searchContainer: {
+            width: '20rem'
         }
     })
 );
@@ -69,23 +73,30 @@ const SearchDefinition =(props: SearchDefinitionProps) => {
             >
                 <MenuItem value={'Movies'}>Movies</MenuItem>
                 <MenuItem value={'TV Shows'}>TV Shows</MenuItem>
-            </TextField>            
-            <TextField
-                className={styles.searchText}
-                inputProps={{ 'aria-label': 'search movies' }}
-                onChange={props.onChangeSearchInput}
-                value={props.searchTerm}
-                label={props.placeHolderText}
-                variant="outlined"
-            />
-            <IconButton 
-                className={styles.searchIconButton}
-                type="submit"  
-                aria-label="search"
-                onClick={props.onClickSearch}
+            </TextField>
+            <Grid className={styles.searchContainer} 
+                  container 
+                  direction='row' 
+                  justify='center' 
+                  alignItems='flex-start'
             >
-                <SearchIcon />
-            </IconButton>
+                <TextField
+                    className={styles.searchText}
+                    inputProps={{ 'aria-label': 'search movies' }}
+                    onChange={props.onChangeSearchInput}
+                    value={props.searchTerm}
+                    label={props.placeHolderText}
+                    variant="outlined"
+                />
+                <IconButton 
+                    className={styles.searchIconButton}
+                    type="submit"  
+                    aria-label="search"
+                    onClick={props.onClickSearch}
+                >
+                    <SearchIcon />
+                </IconButton>
+            </Grid>
             <TextField
                 className={styles.dropDown}
                 id="outlined-select-currency"
