@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/react-themoviedb-test/static/js/main.574a5440.chunk.js",
-    "main.js.map": "/react-themoviedb-test/static/js/main.574a5440.chunk.js.map",
+    "main.js": "/react-themoviedb-test/static/js/main.6bd88288.chunk.js",
+    "main.js.map": "/react-themoviedb-test/static/js/main.6bd88288.chunk.js.map",
     "runtime-main.js": "/react-themoviedb-test/static/js/runtime-main.621f7043.js",
     "runtime-main.js.map": "/react-themoviedb-test/static/js/runtime-main.621f7043.js.map",
     "static/js/2.32786216.chunk.js": "/react-themoviedb-test/static/js/2.32786216.chunk.js",
     "static/js/2.32786216.chunk.js.map": "/react-themoviedb-test/static/js/2.32786216.chunk.js.map",
     "index.html": "/react-themoviedb-test/index.html",
-    "precache-manifest.e28df1baea2f66708372286a80320ec1.js": "/react-themoviedb-test/precache-manifest.e28df1baea2f66708372286a80320ec1.js",
+    "precache-manifest.92eadc42bffe5e84ac731175cc3dc61e.js": "/react-themoviedb-test/precache-manifest.92eadc42bffe5e84ac731175cc3dc61e.js",
     "service-worker.js": "/react-themoviedb-test/service-worker.js",
     "static/js/2.32786216.chunk.js.LICENSE.txt": "/react-themoviedb-test/static/js/2.32786216.chunk.js.LICENSE.txt",
     "static/media/default-image_300.png": "/react-themoviedb-test/static/media/default-image_300.2d2ebf33.png"
@@ -15,6 +15,6 @@
   "entrypoints": [
     "static/js/runtime-main.621f7043.js",
     "static/js/2.32786216.chunk.js",
-    "static/js/main.574a5440.chunk.js"
+    "static/js/main.6bd88288.chunk.js"
   ]
 }
