@@ -4,57 +4,27 @@ import { MyRatingsProps } from './MyRatingsProps';
 import { IDataService } from '../../../service/DataServiceInterfaces';
 import { DataService } from '../../../service/DataService';
 import { Configuration, SearchResults, Movie, Item, Result, RatedMovie } from '../../../model';
-import { DialogProperties } from '../../../common/CommonInterfaces';
 import Container from '@material-ui/core/Container';
 import { StyledPaper } from '../../controls/styled/CommonComponents';
 import SearchContentResults from '../../controls/SearchContentResults';
 import ItemDetailDialog from '../../controls/ItemDetailDialog';
 import { stringConstants } from '../../../common/StringConstants';
+import { emptyConfiguration, emptySearchResults, emptyDialogProps } from '../../../common/EmptyObjects';
 
 class MyRatings extends React.Component<MyRatingsProps, MyRatingsState> {
     dataService: IDataService;
-    emptyConfiguration: Configuration = {
-        images: {
-            baseUrl: '',
-            secureBaseUrl: '',
-            backdropSizes: [],
-            logoSizes: [],
-            posterSizes: [],
-            profileSizes: [],
-            stillSizes: []
-        },
-        changeKeys: []
-
-    }
-
-    emptyDialogProps: DialogProperties = {
-        loading: false,
-        openDialog: false,
-        dialogItem: undefined,
-        genres: [],
-        keywords: [],
-        rating: 0,
-        ratingMessage: ''
-    };
-
-    emptySearchResults: SearchResults = {
-        page: 0,
-        totalPages: 0,
-        totalResults: 0,
-        results: []
-    };    
         
     constructor(props: MyRatingsProps) {
         super(props);
         this.dataService = new DataService();
         this.state = {
-            configuration: this.emptyConfiguration,
+            configuration: emptyConfiguration,
             moviesGenres: [],
-            searchResults: this.emptySearchResults,
+            searchResults: emptySearchResults,
             searchSortValue: '',
             imageUrl: '',
             imageUrlW185: '',
-            dialogProps: this.emptyDialogProps
+            dialogProps: emptyDialogProps
         }
     }
     async componentDidMount() {
@@ -74,13 +44,6 @@ class MyRatings extends React.Component<MyRatingsProps, MyRatingsState> {
             imageUrl: imageUrl,
             imageUrlW185: imageUrlW185
         });
-    }
-
-    onClickSearch = async (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        event.preventDefault();
-        const searchMovieResults: SearchResults = 
-            await this.dataService.searchMovies('Godfather', 1);
-        this.setState(prevState => ({ ...prevState, searchResults: searchMovieResults }));        
     }
 
     handleLoadMoreResults = async () => {
@@ -183,7 +146,7 @@ class MyRatings extends React.Component<MyRatingsProps, MyRatingsState> {
                         results={this.state.searchResults.results as Movie[]} 
                         loadResults={this.handleLoadMoreResults}
                         onClickCard={this.handleClickCard}
-                        />
+                    />
                 }
                 <ItemDetailDialog 
                     baseImageUrl={this.state.imageUrlW185}

@@ -8,5 +8,7 @@ export interface HomeState {
     searchResults: SearchResults;
     searchDefinition: SearchDefinitionValues;
     searchSortValue: string;
+    imageUrl: string;
+    imageUrlW185: string;
     dialogProps: DialogProperties;
 }

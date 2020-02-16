@@ -5,14 +5,16 @@ import About from '../pages/about/About';
 import MyRatings from '../pages/mySelection/MyRatings';
 
 
-const Layout = () => (
-  <main>
-    <Switch>
-      <Route exact path='/' component={Home}/>
-      <Route path='/my-rated-movies' component={MyRatings}/>
-      <Route path='/about' component={About}/>
-    </Switch>
-  </main>
-);
+const Layout = () => {
+  return(
+    <main>
+      <Switch>
+        <Route exact path='/' component={Home}/>
+        <Route path='/my-rated-movies' component={MyRatings}/>
+        <Route path='/about' component={About}/>
+      </Switch>
+    </main>
+  )
+};
 
 export default Layout;

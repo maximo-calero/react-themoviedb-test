@@ -9,58 +9,25 @@ import SearchDefinition from '../../controls/SearchDefinition';
 import { HomeContainer, StyledPaper } from '../../controls/styled/CommonComponents';
 import ItemDetailDialog from '../../controls/ItemDetailDialog';
 import { stringConstants } from '../../../common/StringConstants';
-import { DialogProperties, SearchDefinitionValues } from '../../../common/CommonInterfaces';
+import { emptyConfiguration, emptySearchResults, emptySearchDefinition, emptyDialogProps } from '../../../common/EmptyObjects';
 
 class Home extends React.Component<HomeProps, HomeState>  {
     dataService: IDataService;
-    emptyConfiguration: Configuration = {
-            images: {
-                baseUrl: '',
-                secureBaseUrl: '',
-                backdropSizes: [],
-                logoSizes: [],
-                posterSizes: [],
-                profileSizes: [],
-                stillSizes: []
-            },
-            changeKeys: []
-    
-    };
-    emptySearchResults: SearchResults = {
-        page: 0,
-        totalPages: 0,
-        totalResults: 0,
-        results: []
-    };
-
-    emptySearchDefinition: SearchDefinitionValues = {
-        searchTerm: '',
-        searchTypeValue: 'Movies',
-        placeholderText: 'Search Movies'
-    };
-    
-    emptyDialogProps: DialogProperties = {
-        loading: false,
-        openDialog: false,
-        dialogItem: undefined,
-        genres: [],
-        keywords: [],
-        rating: 0,
-        ratingMessage: ''
-    };
 
     constructor(props: HomeProps) {
         super(props);
         this.dataService = new DataService();
 
         this.state = {
-            configuration: this.emptyConfiguration,
+            configuration: emptyConfiguration,
             moviesGenres: [],
             tvShowGenres: [],
-            searchResults: this.emptySearchResults,
-            searchDefinition: this.emptySearchDefinition,
+            searchResults: emptySearchResults,
+            searchDefinition: emptySearchDefinition,
             searchSortValue:'Title',
-            dialogProps: this.emptyDialogProps
+            imageUrlW185: '',
+            imageUrl: '',
+            dialogProps: emptyDialogProps
         }
     }
 
@@ -68,10 +35,18 @@ class Home extends React.Component<HomeProps, HomeState>  {
         const conf: Configuration = await this.dataService.getConfiguration();
         const movieGenres: Item[] = await this.dataService.getGenres(stringConstants.apiEntities.movie);
         const tvShowGenres: Item[] = await this.dataService.getGenres(stringConstants.apiEntities.tv);
+        const secureUrl: string = conf.images.secureBaseUrl !== ''
+                                ? conf.images.secureBaseUrl
+                                : '';
+        const imageUrl: string = secureUrl !== '' ? `${secureUrl}/${conf.images.posterSizes.w92}/` : '';
+        const imageUrlW185: string = secureUrl !== '' ? `${secureUrl}/${conf.images.posterSizes.w185}/` : '';
+
         this.setState({ 
             configuration: conf, 
             moviesGenres: movieGenres, 
-            tvShowGenres: tvShowGenres 
+            tvShowGenres: tvShowGenres,
+            imageUrl: imageUrl,
+            imageUrlW185: imageUrlW185
         });
     }
 
@@ -283,11 +258,6 @@ class Home extends React.Component<HomeProps, HomeState>  {
     }
 
     render() {
-        const secureUrl: string = this.state.configuration.images.secureBaseUrl !== ''
-                                ? this.state.configuration.images.secureBaseUrl
-                                : '';
-        const imageUrl: string = secureUrl !== '' ? `${secureUrl}/${this.state.configuration.images.posterSizes.w92}/` : '';
-        const imageUrlW185: string = secureUrl !== '' ? `${secureUrl}/${this.state.configuration.images.posterSizes.w185}/` : '';
         return (
             <HomeContainer>
                 <SearchDefinition searchTerm={this.state.searchDefinition.searchTerm} 
@@ -304,7 +274,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 }                
                 {this.state.searchResults.totalResults > 0 &&
                     <SearchContentResults 
-                        imageBaseUrl={imageUrl}
+                        imageBaseUrl={this.state.imageUrl}
                         hasMoreItems={this.state.searchResults.page < this.state.searchResults.totalPages}
                         results={this.state.searchDefinition.searchTypeValue === '1'
                                     ? (this.state.searchResults.results as Movie[])
@@ -315,7 +285,7 @@ class Home extends React.Component<HomeProps, HomeState>  {
                 }
 
                 <ItemDetailDialog 
-                    baseImageUrl={imageUrlW185}
+                    baseImageUrl={this.state.imageUrlW185}
                     openDialog={this.state.dialogProps.openDialog}
                     showBackdrop={this.state.dialogProps.loading}
                     dialogItem={this.state.dialogProps.dialogItem && this.state.dialogProps.dialogItem}

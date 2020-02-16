@@ -23,14 +23,18 @@ const useItemDialogStyles = makeStyles((theme: Theme) =>
     createStyles({
         firstColumn: {
             marginRight: '0.900rem',
-            width: '13rem'
+            width: '16rem',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            flexWrap: 'wrap',       
         },
         secondColumn: {
-            width: '20rem',
+            width: '19rem',
             marginRight: '0.700rem'
         },
         thirdColumn: {
-            width: '20rem',
+            width: '19rem',
         },
         chip: {
             margin: '0.200rem',
@@ -47,8 +51,16 @@ const useItemDialogStyles = makeStyles((theme: Theme) =>
             color: '#fff',
         },
         dialogActions: {
+            flexWrap: 'wrap',
             justifyContent: 'space-between'
-        }   
+        },
+        ratingMessage: {
+            color: 'blue'
+        },
+        fieldSet: {
+            padding: 0,
+            margin: 0
+        }
     })
 );
 
@@ -79,6 +91,37 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                 <Grid container direction='row'>
                     <Grid item className={styles.firstColumn}>
                         <img src={imageUrl} alt={props.dialogItem && props.dialogItem.title} />
+                        <Grid container direction='column'>
+                            <Grid item>
+                                <Box component="fieldset" mb={3} borderColor="transparent" className={styles.fieldSet}>
+                                    <Typography component="legend">Vote average</Typography>
+                                    <Rating
+                                        name="vote-average"
+                                        value={props.dialogItem && props.dialogItem.voteAverage}
+                                        max={10}
+                                        precision={0.25}
+                                    />
+                                </Box>
+                            </Grid>
+                            {props.type === 'Movies' &&
+                                <Grid item>
+                                    <Box component="fieldset" mb={3} borderColor="transparent" className={styles.fieldSet}>
+                                        <Typography component="legend">Your rating</Typography>
+                                        <Box component="fieldset" mb={3} borderColor="transparent" className={styles.fieldSet}>
+                                            <Rating
+                                                name="your-rating"
+                                                value={props.ratingValue}
+                                                max={10}
+                                                precision={0.25}
+                                                onChange={props.onChangeRating}
+                                                className={styles.fieldSet}
+                                            />
+                                            <Typography className={styles.ratingMessage} component="span">{props.ratingMessage && props.ratingMessage}</Typography>
+                                        </Box>
+                                    </Box>
+                                </Grid>
+                            }
+                        </Grid>                        
                     </Grid>
                     <Grid container direction='column' className={styles.secondColumn} >
                         <Grid item>
@@ -137,34 +180,6 @@ const ItemDetailDialog = (props: ItemDetailDialogProps) => {
                 </Grid>
             </DialogContent>
             <DialogActions className={styles.dialogActions}>
-                <Grid container direction='column'>
-                    <Grid item>
-                        <Box component="fieldset" mb={3} borderColor="transparent">
-                            <Typography component="legend">Vote average</Typography>
-                            <Rating
-                                name="vote-average"
-                                value={props.dialogItem && props.dialogItem.voteAverage}
-                                max={10}
-                                precision={0.25}
-                            />
-                        </Box>
-                    </Grid>
-                    {props.type === 'Movies' &&
-                        <Grid item>
-                            <Box component="fieldset" mb={3} borderColor="transparent">
-                                <Typography component="legend">Your rating</Typography>
-                                <Rating
-                                    name="your-rating"
-                                    value={props.ratingValue}
-                                    max={10}
-                                    precision={0.25}
-                                    onChange={props.onChangeRating}
-                                />
-                                <Typography component="span">{props.ratingMessage && props.ratingMessage}</Typography>
-                            </Box>
-                        </Grid>
-                    }
-                </Grid>
                 <Button onClick={props.onClickDialogOk} color="primary">
                 Ok
                 </Button>
