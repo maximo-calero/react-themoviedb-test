@@ -3,6 +3,8 @@ Welcome to the react-themoviedb-test wiki!
 
 This repo has the code for an Single Page Application to show my knowledge in React.
 
+![Demo gif](https://user-images.githubusercontent.com/35887433/74610779-87dff600-50f6-11ea-89d7-a9c31285688a.gif)
+
 This application is using The Movie Database API to implement some features like:
 * Search Movies.
 * Search TV Shows.
