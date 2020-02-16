@@ -24,4 +24,8 @@ About the API key and session id yo need to create an account in The Movie Datab
 
 [About The Movie DB API](https://github.com/maximo-calero/react-themoviedb-test/wiki/About-The-Movie-Database-API)
 
-You can find more details in this Wiki about this implementation.
+You can find more details in this Wiki about this implementation:
+
+[Wiki](https://github.com/maximo-calero/react-themoviedb-test/wiki)
+
+
