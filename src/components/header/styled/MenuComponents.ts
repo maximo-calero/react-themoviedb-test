@@ -8,7 +8,7 @@ export const MenuBar = styled.ul `
     padding: 0;
     overflow: hidden;
     height: 40px;
-    font-size: 1.15em;
+    font-size: 1.55rem;
     color: rgb(102, 102, 102);
     width:100%;    
 `

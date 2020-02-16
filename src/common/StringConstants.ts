@@ -19,6 +19,7 @@ export const stringConstants = {
         'apiKey': '?api_key=',
         'query': '&query=',
         'page': '&page=',
-        'sessionId': '&session_id='
-    }
+        'sessionId': '&session_id=',
+        'sortBy': '&sort_by='
+    },
 };

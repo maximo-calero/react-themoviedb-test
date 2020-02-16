@@ -1,10 +1,11 @@
 import React from 'react';
-import Header from './components/header/Header';
-import Main from './components/Main';
+import Header from '../header/Header';
+import Layout from './Layout';
 import CssBaseline from '@material-ui/core/CssBaseline';
-import { AppContainer } from './components/common/styled/CommonComponents';
+import { AppContainer } from '../controls/styled/CommonComponents';
 import Typography from '@material-ui/core/Typography';
 import { styled as styledmui, MuiThemeProvider, createMuiTheme} from '@material-ui/core/styles';
+
 
 const theme = createMuiTheme({
   palette: {
@@ -30,7 +31,7 @@ const App = () => {
       <AppContainer maxWidth="lg">
         <StyledHeading variant="h2" gutterBottom>Movie Database Search</StyledHeading>
         <Header />
-        <Main />
+        <Layout />
       </AppContainer>
     </React.Fragment>    
   );
