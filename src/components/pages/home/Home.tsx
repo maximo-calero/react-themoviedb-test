@@ -1,14 +1,15 @@
 import React from 'react';
 import { HomeProps } from './HomeProps';
 import { HomeState } from './HomeState';
-import { IDataService } from '../../service/DataServiceInterfaces';
-import { DataService } from '../../service/DataService';
-import { Configuration, SearchResults, TvShow, Movie, Result, Item, RatedMovie } from '../../model';
-import SearchContentResults from '../common/SearchContentResults';
-import SearchDefinition from '../common/SearchDefinition';
-import { HomeContainer, StyledPaper } from '../common/styled/CommonComponents';
-import ItemDetailDialog from '../common/ItemDetailDialog';
-import { stringConstants } from '../../common/StringConstants';
+import { IDataService } from '../../../service/DataServiceInterfaces';
+import { DataService } from '../../../service/DataService';
+import { Configuration, SearchResults, TvShow, Movie, Result, Item, RatedMovie } from '../../../model';
+import SearchContentResults from '../../controls/SearchContentResults';
+import SearchDefinition from '../../controls/SearchDefinition';
+import { HomeContainer, StyledPaper } from '../../controls/styled/CommonComponents';
+import ItemDetailDialog from '../../controls/ItemDetailDialog';
+import { stringConstants } from '../../../common/StringConstants';
+import { DialogProperties, SearchDefinitionValues } from '../../../common/CommonInterfaces';
 
 class Home extends React.Component<HomeProps, HomeState>  {
     dataService: IDataService;
@@ -31,6 +32,23 @@ class Home extends React.Component<HomeProps, HomeState>  {
         totalResults: 0,
         results: []
     };
+
+    emptySearchDefinition: SearchDefinitionValues = {
+        searchTerm: '',
+        searchTypeValue: 'Movies',
+        placeholderText: 'Search Movies'
+    };
+    
+    emptyDialogProps: DialogProperties = {
+        loading: false,
+        openDialog: false,
+        dialogItem: undefined,
+        genres: [],
+        keywords: [],
+        rating: 0,
+        ratingMessage: ''
+    };
+
     constructor(props: HomeProps) {
         super(props);
         this.dataService = new DataService();
@@ -40,21 +58,9 @@ class Home extends React.Component<HomeProps, HomeState>  {
             moviesGenres: [],
             tvShowGenres: [],
             searchResults: this.emptySearchResults,
-            searchDefinition: {
-                searchTerm: '',
-                searchTypeValue: 'Movies',
-                placeholderText: 'Search Movies'
-            },
+            searchDefinition: this.emptySearchDefinition,
             searchSortValue:'Title',
-            dialogProps: {
-                loading: false,
-                openDialog: false,
-                dialogItem: undefined,
-                genres: [],
-                keywords: [],
-                rating: 0,
-                ratingMessage: ''
-            }
+            dialogProps: this.emptyDialogProps
         }
     }
 

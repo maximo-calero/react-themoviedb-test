@@ -8,6 +8,7 @@ const Header = () => {
             <nav>
                 <MenuBar>
                     <MenuItem><Link to='/'>Home</Link></MenuItem>
+                    <MenuItem><Link to='/my-rated-movies'>My Rated Movies</Link></MenuItem>
                     <MenuItem><Link to='/about'>About</Link></MenuItem>
                 </MenuBar>
             </nav>

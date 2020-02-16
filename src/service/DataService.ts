@@ -180,7 +180,6 @@ export class DataService implements IDataService {
     }
 
     public async getRatedMovie(id: string): Promise<RatedMovie | undefined> {
-        // const url: string= `${this.apiUrl}${stringConstants.apiEntities.movie}${id}${stringConstants.verbs.accountStates}${stringConstants.params.apiKey}${this.apiKey}${stringConstants.params.sessionId}${this.sessionId}`;
         const urlPart: string = `${stringConstants.apiEntities.movie}${id}${stringConstants.verbs.accountStates}`;
         const params: string = `${stringConstants.params.sessionId}${this.sessionId}`;
         const obj = await this.getApiJson(urlPart, params);
@@ -193,6 +192,28 @@ export class DataService implements IDataService {
             }
         }else {
             return undefined;
+        }
+    }
+
+    public async getAccountRatedMovies(page: number): Promise<SearchResults> {
+        const urlPart: string = `${stringConstants.apiEntities.account}${stringConstants.verbs.ratedMovies}`;
+        const params: string = `${stringConstants.params.sessionId}${this.sessionId}${stringConstants.params.sortBy}created_at.asc${stringConstants.params.page}${page.toString()}`;
+        const obj = await this.getApiJson(urlPart, params);
+        if (obj.total_results > 0) {
+            const movies: Movie[] = this.getMoviesFromServiceArray(obj.results as any[]);
+            return {
+                page: obj.page,
+                totalResults: obj.total_results,
+                totalPages: obj.total_pages,
+                results: movies
+            };
+        }else {
+            return {
+                page: obj.page,
+                totalResults: obj.total_results,
+                totalPages: obj.total_pages,
+                results: []
+            };
         }
     }
 

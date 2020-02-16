@@ -6,6 +6,7 @@ export interface IDataService {
     searchTvShows: (searchTerm: string, page: number) => Promise<SearchResults>;
     getGenres: (type: string) => Promise<Item[]>;
     getKeywords: (id: string, type:string) => Promise<Item[]>;
-    getRatedMovie: (id: string) => Promise<RatedMovie | undefined>
+    getRatedMovie: (id: string) => Promise<RatedMovie | undefined>;
+    getAccountRatedMovies: (page: number) => Promise<SearchResults>;
     rateMovie: (id: string, rateValue: number) => Promise<any>;
 }
