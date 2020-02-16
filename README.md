@@ -1,48 +1,27 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# React The Movie Database Test
+Welcome to the react-themoviedb-test wiki!
 
-Important to take into account:
-Get Session Id:
-https://developers.themoviedb.org/3/authentication/how-do-i-generate-a-session-id
+This repo has the code for an Single Page Application to show my knowledge in React.
 
-## Available Scripts
+This application is using The Movie Database API to implement some features like:
+* Search Movies.
+* Search TV Shows.
+* Rating Movies.
+* Show the rated movies of the connected account.
+This Application is published in the following URL:
 
-In the project directory, you can run:
+[The Movie DB React](https://maximo-calero.github.io/react-themoviedb-test)
 
-### `npm start`
+## Installation
+1. Clone this repo
+2. Install dependencies executing `npm install`
+3. In the env.js file update the following variables with your own information:
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+`        API_KEY: '<your_api_key>',`
+`        SESSION_ID: '<your_session_id>'`
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+About the API key and session id yo need to create an account in The Movie Database API web site, more information here:
 
-### `npm test`
+[About The Movie DB API](https://github.com/maximo-calero/react-themoviedb-test/wiki/About-The-Movie-Database-API)
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+You can find more details in this Wiki about this implementation.
